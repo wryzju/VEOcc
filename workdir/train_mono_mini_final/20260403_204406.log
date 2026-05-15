@@ -1,0 +1,1909 @@
+2026/04/03 20:44:06 - mmengine - INFO - Config:
+_dim_ = 96
+amp = False
+batch_size = 4
+cls_dims = 13
+data_path = 'data/occscannet'
+empty_idx = 12
+eval_freq = 1
+find_unused_parameters = True
+grad_frames = None
+grad_max_norm = 35
+grid_config = dict(
+    dbound=[
+        0.24,
+        6.0,
+        0.08,
+    ],
+    xbound=[
+        0,
+        4.8,
+        0.08,
+    ],
+    ybound=[
+        0,
+        4.8,
+        0.08,
+    ],
+    zbound=[
+        0,
+        2.88,
+        0.08,
+    ])
+ignore_label = 0
+image_size = [
+    480,
+    640,
+]
+load_from = None
+loss = dict(
+    loss_cfgs=[
+        dict(
+            alpha=0.25,
+            cls_freq=[
+                5080655412,
+                722756,
+                44793226,
+                41084591,
+                3416464,
+                21897101,
+                10609339,
+                13846320,
+                23470172,
+                263393,
+                30949122,
+                9871618,
+                3196722886,
+            ],
+            gamma=2.0,
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask', pred='ce_input', target='ce_label'),
+            type='FocalLoss',
+            weight=100.0),
+        dict(
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask',
+                lovasz_input='ce_input',
+                lovasz_label='ce_label'),
+            type='LovaszLoss',
+            weight=1.0),
+        dict(
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask', pred='ce_input', ssc_target='ce_label'),
+            sem_cls_range=[
+                1,
+                12,
+            ],
+            type='Sem_Scal_Loss',
+            weight=1.0),
+        dict(
+            empty_idx=12,
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask', pred='ce_input', ssc_target='ce_label'),
+            type='Geo_Scal_Loss',
+            weight=1.0),
+    ],
+    type='MultiLoss')
+lss_downsample = [
+    1,
+    1,
+    1,
+]
+max_epochs = 20
+model = dict(
+    backbone=None,
+    build_depthanything=False,
+    depth_net=dict(
+        cam_channels=15,
+        downsample=8,
+        grid_config=dict(
+            dbound=[
+                0.24,
+                6.0,
+                0.08,
+            ],
+            xbound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            ybound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            zbound=[
+                0,
+                2.88,
+                0.08,
+            ]),
+        loss_depth_type='kld',
+        loss_depth_weight=0.0,
+        numC_Trans=96,
+        numC_input=384,
+        type='GeometryDepth_Net'),
+    head=dict(
+        conv_cfg=dict(bias=False, type='Conv3d'),
+        empty_idx=12,
+        in_channels=[
+            96,
+        ],
+        norm_cfg=dict(num_groups=24, requires_grad=True, type='GN'),
+        num_level=1,
+        occ_size=[
+            60,
+            60,
+            36,
+        ],
+        out_channel=13,
+        type='OccHead',
+        with_cp=True),
+    lifter=dict(
+        data_config=dict(input_size=[
+            480,
+            640,
+        ]),
+        downsample=8,
+        grid_config=dict(
+            dbound=[
+                0.24,
+                6.0,
+                0.08,
+            ],
+            xbound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            ybound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            zbound=[
+                0,
+                2.88,
+                0.08,
+            ]),
+        type='LSSViewTransformer'),
+    loss_occ=dict(
+        loss_cfgs=[
+            dict(
+                alpha=0.25,
+                cls_freq=[
+                    5080655412,
+                    722756,
+                    44793226,
+                    41084591,
+                    3416464,
+                    21897101,
+                    10609339,
+                    13846320,
+                    23470172,
+                    263393,
+                    30949122,
+                    9871618,
+                    3196722886,
+                ],
+                gamma=2.0,
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask', pred='ce_input', target='ce_label'),
+                type='FocalLoss',
+                weight=100.0),
+            dict(
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask',
+                    lovasz_input='ce_input',
+                    lovasz_label='ce_label'),
+                type='LovaszLoss',
+                weight=1.0),
+            dict(
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask',
+                    pred='ce_input',
+                    ssc_target='ce_label'),
+                sem_cls_range=[
+                    1,
+                    12,
+                ],
+                type='Sem_Scal_Loss',
+                weight=1.0),
+            dict(
+                empty_idx=12,
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask',
+                    pred='ce_input',
+                    ssc_target='ce_label'),
+                type='Geo_Scal_Loss',
+                weight=1.0),
+        ],
+        type='MultiLoss'),
+    neck=dict(
+        in_channels=[
+            48,
+            80,
+            224,
+            2560,
+        ],
+        out_channels=[
+            96,
+            96,
+            96,
+            96,
+        ],
+        type='SECONDFPN',
+        upsample_strides=[
+            0.5,
+            1,
+            2,
+            4,
+        ]),
+    occ_encoder_backbone=dict(
+        drop_path_rate=0.3,
+        numC_input=96,
+        num_channels=[
+            96,
+            96,
+            96,
+        ],
+        num_layer=[
+            2,
+            2,
+            2,
+        ],
+        stride=[
+            1,
+            2,
+            2,
+        ],
+        type='CustomResNet3D'),
+    occ_encoder_neck=dict(
+        act_cfg=dict(inplace=True, type='ReLU'),
+        conv_cfg=dict(type='Conv3d'),
+        in_channels=[
+            96,
+            96,
+            96,
+        ],
+        norm_cfg=dict(num_groups=24, requires_grad=True, type='GN'),
+        num_outs=3,
+        out_channels=96,
+        start_level=0,
+        type='GeneralizedLSSFPN',
+        upsample_cfg=dict(align_corners=False, mode='trilinear')),
+    type='VoxelSegmentor')
+ngpu = 4
+norm_cfg = dict(num_groups=24, requires_grad=True, type='GN')
+num_cams = 1
+num_frames = 1
+occ_size = [
+    60,
+    60,
+    36,
+]
+offset = 0
+optimizer_wrapper = dict(
+    optimizer=dict(lr=0.0004, type='AdamW', weight_decay=0.01),
+    paramwise_cfg=dict(custom_keys=dict(backbone=dict(lr_mult=0.1))))
+pc_range = [
+    -51.2,
+    -51.2,
+    -5.0,
+    51.2,
+    51.2,
+    3.0,
+]
+print_freq = 50
+resize_lim = [
+    1.0,
+    1.0,
+]
+scale_range = [
+    0.01,
+    0.08,
+]
+scene_size = (
+    4.8,
+    4.8,
+    2.88,
+)
+seed = 1
+track_running_stats = True
+train_dataset_config = dict(
+    data_path='data/occscannet',
+    data_tg='mini',
+    empty_idx=12,
+    num_frames=1,
+    offset=0,
+    phase='train',
+    type='Scannet_Scene_OpenOccupancy_Dataset_OffLine_Depth')
+train_loader_config = dict(batch_size=4, num_workers=8, shuffle=True)
+train_wrapper_config = dict(
+    final_dim=[
+        480,
+        640,
+    ],
+    phase='train',
+    resize_lim=[
+        1.0,
+        1.0,
+    ],
+    type='Scannet_Scene_Occ_DatasetWrapper')
+val_dataset_config = dict(
+    data_path='data/occscannet',
+    data_tg='mini',
+    empty_idx=12,
+    num_frames=1,
+    offset=0,
+    phase='test',
+    type='Scannet_Scene_OpenOccupancy_Dataset_OffLine_Depth')
+val_loader_config = dict(batch_size=4, num_workers=8, shuffle=False)
+val_wrapper_config = dict(
+    final_dim=[
+        480,
+        640,
+    ],
+    phase='test',
+    resize_lim=[
+        1.0,
+        1.0,
+    ],
+    type='Scannet_Scene_Occ_DatasetWrapper')
+voxel_size = 0.08
+work_dir = 'workdir/train_mono_mini_v3'
+
+2026/04/03 20:44:13 - mmengine - INFO - Number of params: 78589602
+2026/04/03 20:44:13 - mmengine - INFO - Model:
+VoxelSegmentor(
+  (backbone): GenEfficientNet(
+    (conv_stem): Conv2dSame(3, 64, kernel_size=(3, 3), stride=(2, 2), bias=False)
+    (bn1): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    (act1): SiLU(inplace=True)
+    (blocks): Sequential(
+      (0): Sequential(
+        (0): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=64, bias=False)
+          (bn1): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(64, 16, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(16, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+        (1): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (bn1): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+        (2): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (bn1): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+        (3): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (bn1): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+      )
+      (1): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(192, 192, kernel_size=(3, 3), stride=(2, 2), groups=192, bias=False)
+          (bn2): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(192, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 192, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (2): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(288, 288, kernel_size=(5, 5), stride=(2, 2), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (3): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(480, 480, kernel_size=(3, 3), stride=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (7): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (8): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (9): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (4): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (7): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (8): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (9): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (5): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(1344, 1344, kernel_size=(5, 5), stride=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (7): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (8): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (9): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (10): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (11): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (12): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (6): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(640, 3840, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(3840, 3840, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=3840, bias=False)
+          (bn2): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(3840, 160, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(160, 3840, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(3840, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(640, 3840, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(3840, 3840, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=3840, bias=False)
+          (bn2): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(3840, 160, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(160, 3840, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(3840, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(640, 3840, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(3840, 3840, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=3840, bias=False)
+          (bn2): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(3840, 160, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(160, 3840, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(3840, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (conv_head): Conv2d(640, 2560, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn2): BatchNorm2d(2560, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    (act2): SiLU(inplace=True)
+    (global_pool): Identity()
+    (classifier): Identity()
+  )
+  (neck): SECONDFPN(
+    (deblocks): ModuleList(
+      (0): Sequential(
+        (0): Conv2d(48, 96, kernel_size=(2, 2), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Sequential(
+        (0): ConvTranspose2d(80, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (2): Sequential(
+        (0): ConvTranspose2d(224, 96, kernel_size=(2, 2), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Sequential(
+        (0): ConvTranspose2d(2560, 96, kernel_size=(4, 4), stride=(4, 4), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+    )
+  )
+  init_cfg=[{'type': 'Kaiming', 'layer': 'ConvTranspose2d'}, {'type': 'Constant', 'layer': 'NaiveSyncBatchNorm2d', 'val': 1.0}]
+  (depth_net): GeometryDepth_Net(
+    (stereo_volume_encoder): StereoVolumeEncoder(
+      (stem): Sequential(
+        (0): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): GroupNorm(2, 72, eps=1e-05, affine=True)
+      )
+      (Unet): Sequential(
+        (0): SimpleUnet(
+          (conv1): Sequential(
+            (0): Sequential(
+              (0): Conv2d(72, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 144, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Sequential(
+              (0): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 144, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Sequential(
+              (0): Conv2d(144, 288, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 288, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Sequential(
+              (0): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 288, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv5): Sequential(
+            (0): ConvTranspose2d(288, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (conv6): Sequential(
+            (0): ConvTranspose2d(144, 72, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+            (1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (redir1): Sequential(
+            (0): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GroupNorm(2, 72, eps=1e-05, affine=True)
+          )
+          (redir2): Sequential(
+            (0): Conv2d(144, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GroupNorm(2, 144, eps=1e-05, affine=True)
+          )
+        )
+      )
+      (conv_out): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+    )
+    (depth_net): DepthNet(
+      (reduce_conv): Sequential(
+        (0): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (context_conv): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1))
+      (bn): BatchNorm1d(15, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (depth_mlp): Mlp(
+        (fc1): Linear(in_features=15, out_features=384, bias=True)
+        (act): ReLU()
+        (drop1): Dropout(p=0.0, inplace=False)
+        (fc2): Linear(in_features=384, out_features=384, bias=True)
+        (drop2): Dropout(p=0.0, inplace=False)
+      )
+      (depth_se): SELayer(
+        (conv_reduce): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (act1): ReLU()
+        (conv_expand): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (gate): Sigmoid()
+      )
+      (context_mlp): Mlp(
+        (fc1): Linear(in_features=15, out_features=384, bias=True)
+        (act): ReLU()
+        (drop1): Dropout(p=0.0, inplace=False)
+        (fc2): Linear(in_features=384, out_features=384, bias=True)
+        (drop2): Dropout(p=0.0, inplace=False)
+      )
+      (context_se): SELayer(
+        (conv_reduce): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (act1): ReLU()
+        (conv_expand): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (gate): Sigmoid()
+      )
+      (depth_conv): Sequential(
+        (0): BasicBlock(
+          (conv1): Conv2d(384, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (downsample): Conv2d(384, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+        (1): BasicBlock(
+          (conv1): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (2): BasicBlock(
+          (conv1): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (3): ASPP(
+          (aspp1): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (aspp2): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(6, 6), dilation=(6, 6), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (aspp3): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(12, 12), dilation=(12, 12), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (aspp4): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(18, 18), dilation=(18, 18), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (global_avg_pool): Sequential(
+            (0): AdaptiveAvgPool2d(output_size=(1, 1))
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (3): ReLU()
+          )
+          (conv1): Conv2d(360, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU()
+          (dropout): Dropout(p=0.5, inplace=False)
+        )
+        (4): DeformConv2dPack(in_channels=72,
+        out_channels=72,
+        kernel_size=(3, 3),
+        stride=(1, 1),
+        padding=(1, 1),
+        dilation=(1, 1),
+        groups=4,
+        deform_groups=1,
+        bias=False)
+        (5): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (depth_aggregation): DepthAggregation(
+      (stem): Conv3d(2, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+      (mono_stereo_attention): Attention(
+        (neighbor_atttention): NeighborhoodCrossAttention2D(
+          head_dim=72, num_heads=1, kernel_size=5, dilation=1, rel_pos_bias=True
+          (q): Linear(in_features=72, out_features=72, bias=True)
+          (kv): Linear(in_features=72, out_features=144, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=72, out_features=72, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (stereo_mono_attention): Attention(
+        (neighbor_atttention): NeighborhoodCrossAttention2D(
+          head_dim=72, num_heads=1, kernel_size=5, dilation=1, rel_pos_bias=True
+          (q): Linear(in_features=72, out_features=72, bias=True)
+          (kv): Linear(in_features=72, out_features=144, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=72, out_features=72, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (UNet_3D): SimpleUnet3D(
+        (conv1): Sequential(
+          (0): Sequential(
+            (0): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 64, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv2): Sequential(
+          (0): Sequential(
+            (0): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 64, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv3): Sequential(
+          (0): Sequential(
+            (0): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 128, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv4): Sequential(
+          (0): Sequential(
+            (0): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 128, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv5): Sequential(
+          (0): ConvTranspose3d(128, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), output_padding=(1, 1, 1), bias=False)
+          (1): BatchNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (conv6): Sequential(
+          (0): ConvTranspose3d(64, 32, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), output_padding=(1, 1, 1), bias=False)
+          (1): BatchNorm3d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (redir1): Sequential(
+          (0): Conv3d(32, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+          (1): GroupNorm(2, 32, eps=1e-05, affine=True)
+        )
+        (redir2): Sequential(
+          (0): Conv3d(64, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+          (1): GroupNorm(2, 64, eps=1e-05, affine=True)
+        )
+      )
+      (channel_attention): ChannelAttention3D(
+        (conv1): Sequential(
+          (0): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+          (1): GELU(approximate=none)
+          (2): GroupNorm(1, 32, eps=1e-05, affine=True)
+        )
+        (avg_pool): AdaptiveAvgPool3d(output_size=1)
+        (conv2): Sequential(
+          (0): Conv3d(32, 4, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (1): GELU(approximate=none)
+          (2): Conv3d(4, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (3): GELU(approximate=none)
+        )
+        (sigmoid): Sigmoid()
+        (conv): Sequential(
+          (0): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+          (1): GELU(approximate=none)
+          (2): GroupNorm(2, 32, eps=1e-05, affine=True)
+        )
+      )
+      (out_conv): Conv3d(32, 1, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+    )
+  )
+  (lifter): LSSViewTransformer()
+  (occ_encoder_backbone): CustomResNet3D(
+    (layers): Sequential(
+      (0): Sequential(
+        (0): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (downsample): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): Identity()
+        )
+        (1): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.050)
+        )
+      )
+      (1): Sequential(
+        (0): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (downsample): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.100)
+        )
+        (1): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.150)
+        )
+      )
+      (2): Sequential(
+        (0): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (downsample): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.200)
+        )
+        (1): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.250)
+        )
+      )
+    )
+  )
+  (occ_encoder_neck): GeneralizedLSSFPN(
+    (lateral_convs): ModuleList(
+      (0): ConvModule(
+        (conv): Conv3d(192, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+      (1): ConvModule(
+        (conv): Conv3d(192, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+    )
+    (fpn_convs): ModuleList(
+      (0): ConvModule(
+        (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+      (1): ConvModule(
+        (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+    )
+  )
+  (head): OccHead(
+    (occ_convs): ModuleList(
+      (0): Sequential(
+        (0): Conv3d(96, 48, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        (1): GroupNorm(24, 48, eps=1e-05, affine=True)
+        (2): ReLU(inplace=True)
+        (3): Conv3d(48, 13, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+      )
+    )
+  )
+  (loss_occ): MultiLoss(
+    (losses): ModuleList(
+      (0): FocalLoss()
+      (1): LovaszLoss()
+      (2): Sem_Scal_Loss()
+      (3): Geo_Scal_Loss()
+    )
+  )
+)
+2026/04/03 20:44:13 - mmengine - INFO - converted sync bn.
+2026/04/03 20:44:13 - mmengine - INFO - enabled DDP static graph.
+2026/04/03 20:44:39 - mmengine - INFO - [TRAIN] Epoch 1 Iter     0/344   FocalLoss: 0.115 (0.115),   LovaszLoss: 0.941 (0.941),   Sem_Scal_Loss: 8.741 (8.741),   Geo_Scal_Loss: 3.801 (3.801),   Loss: 24.978 (24.978),   GradNorm: 133.919,   lr: 0.0000010,   time: 15.027 (3.335)
+2026/04/03 20:46:37 - mmengine - INFO - [TRAIN] Epoch 1 Iter    50/344   FocalLoss: 0.033 (0.074),   LovaszLoss: 0.925 (0.922),   Sem_Scal_Loss: 6.963 (6.729),   Geo_Scal_Loss: 3.043 (3.452),   Loss: 14.268 (18.500),   GradNorm: 23.883,   lr: 0.0000030,   time: 2.328 (0.487)
+2026/04/03 20:48:36 - mmengine - INFO - [TRAIN] Epoch 1 Iter   100/344   FocalLoss: 0.021 (0.026),   LovaszLoss: 0.917 (0.919),   Sem_Scal_Loss: 5.622 (6.771),   Geo_Scal_Loss: 2.109 (2.988),   Loss: 10.732 (13.292),   GradNorm: 14.931,   lr: 0.0000049,   time: 2.356 (0.564)
+2026/04/03 20:50:35 - mmengine - INFO - [TRAIN] Epoch 1 Iter   150/344   FocalLoss: 0.019 (0.021),   LovaszLoss: 0.893 (0.901),   Sem_Scal_Loss: 5.339 (6.211),   Geo_Scal_Loss: 1.903 (2.463),   Loss: 10.029 (11.693),   GradNorm: 17.144,   lr: 0.0000069,   time: 2.383 (0.564)
+2026/04/03 20:52:34 - mmengine - INFO - [TRAIN] Epoch 1 Iter   200/344   FocalLoss: 0.014 (0.017),   LovaszLoss: 0.822 (0.875),   Sem_Scal_Loss: 5.128 (5.577),   Geo_Scal_Loss: 1.850 (2.063),   Loss: 9.206 (10.242),   GradNorm: 17.197,   lr: 0.0000088,   time: 2.314 (0.449)
+2026/04/03 20:54:32 - mmengine - INFO - [TRAIN] Epoch 1 Iter   250/344   FocalLoss: 0.015 (0.015),   LovaszLoss: 0.813 (0.824),   Sem_Scal_Loss: 4.470 (4.673),   Geo_Scal_Loss: 1.698 (1.767),   Loss: 8.494 (8.798),   GradNorm: 23.393,   lr: 0.0000108,   time: 2.334 (0.564)
+2026/04/03 20:56:29 - mmengine - INFO - [TRAIN] Epoch 1 Iter   300/344   FocalLoss: 0.010 (0.013),   LovaszLoss: 0.691 (0.775),   Sem_Scal_Loss: 2.662 (4.153),   Geo_Scal_Loss: 1.736 (1.615),   Loss: 6.116 (7.893),   GradNorm: 15.645,   lr: 0.0000127,   time: 2.305 (0.566)
+2026/04/03 20:58:21 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.019 (0.019),   LovaszLoss: 0.819 (0.819),   Sem_Scal_Loss: 4.420 (4.420),   Geo_Scal_Loss: 1.542 (1.542),   Loss: 8.679 (8.679),   
+2026/04/03 20:58:50 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.010 (0.012),   LovaszLoss: 0.663 (0.723),   Sem_Scal_Loss: 2.598 (3.344),   Geo_Scal_Loss: 1.113 (1.550),   Loss: 5.405 (6.792),   
+2026/04/03 20:59:18 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.016 (0.012),   LovaszLoss: 0.789 (0.724),   Sem_Scal_Loss: 4.612 (3.297),   Geo_Scal_Loss: 2.147 (1.459),   Loss: 9.118 (6.644),   
+2026/04/03 20:59:44 - mmengine - INFO - Current val iou of sem_cls is [ 0.449  0.019  0.375  0.273  0.071  0.175  0.144  0.168  0.207  0.001
+  0.008  0.193]
+2026/04/03 20:59:44 - mmengine - INFO - Current val iou of sem is 0.1484263964850695
+2026/04/03 20:59:44 - mmengine - INFO - Current val iou of geo is 0.06555894337961796
+2026/04/03 21:00:01 - mmengine - INFO - [TRAIN] Epoch 2 Iter     0/344   FocalLoss: 0.011 (0.011),   LovaszLoss: 0.796 (0.796),   Sem_Scal_Loss: 5.047 (5.047),   Geo_Scal_Loss: 1.783 (1.783),   Loss: 8.708 (8.708),   GradNorm: 21.582,   lr: 0.0000144,   time: 7.018 (3.630)
+2026/04/03 21:02:00 - mmengine - INFO - [TRAIN] Epoch 2 Iter    50/344   FocalLoss: 0.015 (0.011),   LovaszLoss: 0.705 (0.723),   Sem_Scal_Loss: 2.927 (3.367),   Geo_Scal_Loss: 1.312 (1.500),   Loss: 6.407 (6.732),   GradNorm: 17.646,   lr: 0.0000164,   time: 2.368 (0.570)
+2026/04/03 21:03:58 - mmengine - INFO - [TRAIN] Epoch 2 Iter   100/344   FocalLoss: 0.014 (0.011),   LovaszLoss: 0.728 (0.705),   Sem_Scal_Loss: 2.641 (2.979),   Geo_Scal_Loss: 1.481 (1.266),   Loss: 6.218 (6.021),   GradNorm: 11.984,   lr: 0.0000183,   time: 2.368 (0.569)
+2026/04/03 21:05:57 - mmengine - INFO - [TRAIN] Epoch 2 Iter   150/344   FocalLoss: 0.014 (0.010),   LovaszLoss: 0.711 (0.704),   Sem_Scal_Loss: 2.426 (2.949),   Geo_Scal_Loss: 0.817 (1.232),   Loss: 5.334 (5.887),   GradNorm: 31.372,   lr: 0.0000203,   time: 2.396 (0.565)
+2026/04/03 21:07:55 - mmengine - INFO - [TRAIN] Epoch 2 Iter   200/344   FocalLoss: 0.011 (0.010),   LovaszLoss: 0.615 (0.677),   Sem_Scal_Loss: 1.558 (2.620),   Geo_Scal_Loss: 1.139 (1.250),   Loss: 4.414 (5.558),   GradNorm: 13.458,   lr: 0.0000222,   time: 2.339 (0.471)
+2026/04/03 21:09:52 - mmengine - INFO - [TRAIN] Epoch 2 Iter   250/344   FocalLoss: 0.006 (0.009),   LovaszLoss: 0.622 (0.678),   Sem_Scal_Loss: 1.997 (2.689),   Geo_Scal_Loss: 1.033 (1.184),   Loss: 4.237 (5.462),   GradNorm: 13.510,   lr: 0.0000242,   time: 2.317 (0.498)
+2026/04/03 21:11:49 - mmengine - INFO - [TRAIN] Epoch 2 Iter   300/344   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.703 (0.653),   Sem_Scal_Loss: 3.243 (2.327),   Geo_Scal_Loss: 1.376 (1.080),   Loss: 6.135 (4.909),   GradNorm: 17.283,   lr: 0.0000261,   time: 2.328 (0.552)
+2026/04/03 21:13:41 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.016 (0.016),   LovaszLoss: 0.753 (0.753),   Sem_Scal_Loss: 3.562 (3.562),   Geo_Scal_Loss: 1.213 (1.213),   Loss: 7.116 (7.116),   
+2026/04/03 21:14:10 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.007 (0.009),   LovaszLoss: 0.596 (0.653),   Sem_Scal_Loss: 1.520 (2.422),   Geo_Scal_Loss: 0.805 (1.149),   Loss: 3.647 (5.091),   
+2026/04/03 21:14:35 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.009 (0.009),   LovaszLoss: 0.715 (0.652),   Sem_Scal_Loss: 3.165 (2.361),   Geo_Scal_Loss: 1.777 (1.086),   Loss: 6.571 (4.984),   
+2026/04/03 21:14:59 - mmengine - INFO - Current val iou of sem_cls is [ 0.699  0.039  0.431  0.318  0.178  0.299  0.259  0.423  0.307  0.024
+  0.023  0.288]
+2026/04/03 21:14:59 - mmengine - INFO - Current val iou of sem is 0.23545252209630368
+2026/04/03 21:14:59 - mmengine - INFO - Current val iou of geo is 0.11596998677395728
+2026/04/03 21:15:16 - mmengine - INFO - [TRAIN] Epoch 3 Iter     0/344   FocalLoss: 0.014 (0.014),   LovaszLoss: 0.703 (0.703),   Sem_Scal_Loss: 2.112 (2.112),   Geo_Scal_Loss: 1.264 (1.264),   Loss: 5.524 (5.524),   GradNorm: 12.839,   lr: 0.0000278,   time: 7.547 (3.552)
+2026/04/03 21:17:13 - mmengine - INFO - [TRAIN] Epoch 3 Iter    50/344   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.626 (0.643),   Sem_Scal_Loss: 2.102 (2.343),   Geo_Scal_Loss: 1.123 (1.071),   Loss: 4.662 (4.870),   GradNorm: 18.374,   lr: 0.0000298,   time: 2.291 (0.570)
+2026/04/03 21:19:10 - mmengine - INFO - [TRAIN] Epoch 3 Iter   100/344   FocalLoss: 0.012 (0.008),   LovaszLoss: 0.617 (0.632),   Sem_Scal_Loss: 1.718 (2.115),   Geo_Scal_Loss: 0.937 (1.048),   Loss: 4.437 (4.605),   GradNorm: 9.100,   lr: 0.0000317,   time: 2.371 (0.470)
+2026/04/03 21:21:07 - mmengine - INFO - [TRAIN] Epoch 3 Iter   150/344   FocalLoss: 0.006 (0.008),   LovaszLoss: 0.644 (0.631),   Sem_Scal_Loss: 2.334 (2.045),   Geo_Scal_Loss: 0.974 (0.977),   Loss: 4.558 (4.425),   GradNorm: 16.293,   lr: 0.0000337,   time: 2.326 (0.576)
+2026/04/03 21:23:04 - mmengine - INFO - [TRAIN] Epoch 3 Iter   200/344   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.641 (0.628),   Sem_Scal_Loss: 2.434 (2.068),   Geo_Scal_Loss: 0.980 (0.970),   Loss: 4.841 (4.440),   GradNorm: 10.490,   lr: 0.0000356,   time: 2.323 (0.551)
+2026/04/03 21:25:01 - mmengine - INFO - [TRAIN] Epoch 3 Iter   250/344   FocalLoss: 0.010 (0.007),   LovaszLoss: 0.669 (0.628),   Sem_Scal_Loss: 2.266 (2.157),   Geo_Scal_Loss: 0.969 (1.001),   Loss: 4.911 (4.531),   GradNorm: 12.520,   lr: 0.0000376,   time: 2.374 (0.552)
+2026/04/03 21:26:59 - mmengine - INFO - [TRAIN] Epoch 3 Iter   300/344   FocalLoss: 0.006 (0.008),   LovaszLoss: 0.588 (0.605),   Sem_Scal_Loss: 1.381 (1.818),   Geo_Scal_Loss: 0.817 (0.945),   Loss: 3.428 (4.175),   GradNorm: 9.977,   lr: 0.0000395,   time: 2.453 (0.567)
+2026/04/03 21:28:51 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.016 (0.016),   LovaszLoss: 0.696 (0.696),   Sem_Scal_Loss: 2.702 (2.702),   Geo_Scal_Loss: 1.074 (1.074),   Loss: 6.078 (6.078),   
+2026/04/03 21:29:18 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.007 (0.008),   LovaszLoss: 0.539 (0.588),   Sem_Scal_Loss: 1.179 (1.925),   Geo_Scal_Loss: 0.688 (1.008),   Loss: 3.084 (4.296),   
+2026/04/03 21:29:44 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.680 (0.590),   Sem_Scal_Loss: 2.684 (1.851),   Geo_Scal_Loss: 1.559 (0.945),   Loss: 5.721 (4.166),   
+2026/04/03 21:30:08 - mmengine - INFO - Current val iou of sem_cls is [ 0.807  0.002  0.488  0.346  0.146  0.035  0.503  0.436  0.389  0.197
+  0.111  0.330]
+2026/04/03 21:30:08 - mmengine - INFO - Current val iou of sem is 0.27127926612507003
+2026/04/03 21:30:08 - mmengine - INFO - Current val iou of geo is 0.17296814674492939
+2026/04/03 21:30:25 - mmengine - INFO - [TRAIN] Epoch 4 Iter     0/344   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.453 (0.453),   Sem_Scal_Loss: 0.829 (0.829),   Geo_Scal_Loss: 0.528 (0.528),   Loss: 2.288 (2.288),   GradNorm: 11.804,   lr: 0.0000379,   time: 7.525 (4.960)
+2026/04/03 21:32:23 - mmengine - INFO - [TRAIN] Epoch 4 Iter    50/344   FocalLoss: 0.004 (0.007),   LovaszLoss: 0.501 (0.591),   Sem_Scal_Loss: 1.146 (1.850),   Geo_Scal_Loss: 0.569 (0.868),   Loss: 2.628 (4.050),   GradNorm: 7.253,   lr: 0.0000377,   time: 2.344 (0.452)
+2026/04/03 21:34:20 - mmengine - INFO - [TRAIN] Epoch 4 Iter   100/344   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.472 (0.578),   Sem_Scal_Loss: 0.882 (1.675),   Geo_Scal_Loss: 0.627 (0.889),   Loss: 2.662 (3.852),   GradNorm: 6.769,   lr: 0.0000375,   time: 2.319 (0.471)
+2026/04/03 21:36:17 - mmengine - INFO - [TRAIN] Epoch 4 Iter   150/344   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.548 (0.569),   Sem_Scal_Loss: 1.058 (1.539),   Geo_Scal_Loss: 0.791 (0.860),   Loss: 3.109 (3.667),   GradNorm: 8.782,   lr: 0.0000372,   time: 2.273 (0.480)
+2026/04/03 21:38:14 - mmengine - INFO - [TRAIN] Epoch 4 Iter   200/344   FocalLoss: 0.006 (0.007),   LovaszLoss: 0.558 (0.563),   Sem_Scal_Loss: 1.502 (1.690),   Geo_Scal_Loss: 0.594 (0.825),   Loss: 3.239 (3.760),   GradNorm: 9.363,   lr: 0.0000370,   time: 2.288 (0.468)
+2026/04/03 21:40:11 - mmengine - INFO - [TRAIN] Epoch 4 Iter   250/344   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.499 (0.565),   Sem_Scal_Loss: 0.944 (1.635),   Geo_Scal_Loss: 0.627 (0.824),   Loss: 2.747 (3.735),   GradNorm: 11.311,   lr: 0.0000368,   time: 2.355 (0.470)
+2026/04/03 21:42:09 - mmengine - INFO - [TRAIN] Epoch 4 Iter   300/344   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.567 (0.556),   Sem_Scal_Loss: 1.351 (1.566),   Geo_Scal_Loss: 1.030 (0.862),   Loss: 3.675 (3.648),   GradNorm: 8.985,   lr: 0.0000365,   time: 2.486 (0.474)
+2026/04/03 21:44:00 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.013 (0.013),   LovaszLoss: 0.662 (0.662),   Sem_Scal_Loss: 2.367 (2.367),   Geo_Scal_Loss: 0.925 (0.925),   Loss: 5.245 (5.245),   
+2026/04/03 21:44:28 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.005 (0.007),   LovaszLoss: 0.497 (0.534),   Sem_Scal_Loss: 1.002 (1.663),   Geo_Scal_Loss: 0.556 (0.873),   Loss: 2.541 (3.723),   
+2026/04/03 21:44:53 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.591 (0.529),   Sem_Scal_Loss: 1.800 (1.588),   Geo_Scal_Loss: 1.276 (0.821),   Loss: 4.354 (3.592),   
+2026/04/03 21:45:17 - mmengine - INFO - Current val iou of sem_cls is [ 0.938  0.189  0.543  0.375  0.264  0.160  0.567  0.537  0.424  0.246
+  0.524  0.371]
+2026/04/03 21:45:17 - mmengine - INFO - Current val iou of sem is 0.381746377396073
+2026/04/03 21:45:17 - mmengine - INFO - Current val iou of geo is 0.42197664265176965
+2026/04/03 21:45:35 - mmengine - INFO - [TRAIN] Epoch 5 Iter     0/344   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.484 (0.484),   Sem_Scal_Loss: 1.048 (1.048),   Geo_Scal_Loss: 0.900 (0.900),   Loss: 3.002 (3.002),   GradNorm: 9.308,   lr: 0.0000363,   time: 7.462 (3.799)
+2026/04/03 21:47:31 - mmengine - INFO - [TRAIN] Epoch 5 Iter    50/344   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.582 (0.534),   Sem_Scal_Loss: 1.422 (1.350),   Geo_Scal_Loss: 0.934 (0.780),   Loss: 3.550 (3.297),   GradNorm: 6.551,   lr: 0.0000360,   time: 2.308 (0.469)
+2026/04/03 21:49:27 - mmengine - INFO - [TRAIN] Epoch 5 Iter   100/344   FocalLoss: 0.007 (0.006),   LovaszLoss: 0.558 (0.537),   Sem_Scal_Loss: 1.393 (1.459),   Geo_Scal_Loss: 0.733 (0.793),   Loss: 3.412 (3.422),   GradNorm: 7.427,   lr: 0.0000357,   time: 2.354 (0.472)
+2026/04/03 21:51:24 - mmengine - INFO - [TRAIN] Epoch 5 Iter   150/344   FocalLoss: 0.004 (0.006),   LovaszLoss: 0.616 (0.529),   Sem_Scal_Loss: 1.959 (1.449),   Geo_Scal_Loss: 0.781 (0.781),   Loss: 3.760 (3.349),   GradNorm: 6.299,   lr: 0.0000355,   time: 2.456 (0.557)
+2026/04/03 21:53:20 - mmengine - INFO - [TRAIN] Epoch 5 Iter   200/344   FocalLoss: 0.009 (0.006),   LovaszLoss: 0.585 (0.533),   Sem_Scal_Loss: 1.902 (1.415),   Geo_Scal_Loss: 0.861 (0.794),   Loss: 4.234 (3.373),   GradNorm: 10.038,   lr: 0.0000352,   time: 2.292 (0.466)
+2026/04/03 21:55:17 - mmengine - INFO - [TRAIN] Epoch 5 Iter   250/344   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.553 (0.500),   Sem_Scal_Loss: 1.521 (1.271),   Geo_Scal_Loss: 0.813 (0.725),   Loss: 3.440 (3.078),   GradNorm: 7.154,   lr: 0.0000349,   time: 2.347 (0.571)
+2026/04/03 21:57:14 - mmengine - INFO - [TRAIN] Epoch 5 Iter   300/344   FocalLoss: 0.005 (0.006),   LovaszLoss: 0.481 (0.492),   Sem_Scal_Loss: 1.057 (1.208),   Geo_Scal_Loss: 0.568 (0.703),   Loss: 2.583 (2.986),   GradNorm: 10.493,   lr: 0.0000346,   time: 2.319 (0.461)
+2026/04/03 21:59:08 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.011 (0.011),   LovaszLoss: 0.588 (0.588),   Sem_Scal_Loss: 1.746 (1.746),   Geo_Scal_Loss: 0.793 (0.793),   Loss: 4.181 (4.181),   
+2026/04/03 21:59:34 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.005 (0.007),   LovaszLoss: 0.447 (0.500),   Sem_Scal_Loss: 0.783 (1.452),   Geo_Scal_Loss: 0.469 (0.802),   Loss: 2.201 (3.415),   
+2026/04/03 22:00:00 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.006 (0.007),   LovaszLoss: 0.543 (0.497),   Sem_Scal_Loss: 1.465 (1.378),   Geo_Scal_Loss: 1.085 (0.753),   Loss: 3.733 (3.301),   
+2026/04/03 22:00:24 - mmengine - INFO - Current val iou of sem_cls is [ 0.962  0.118  0.529  0.395  0.326  0.409  0.570  0.585  0.453  0.235
+  0.541  0.392]
+2026/04/03 22:00:24 - mmengine - INFO - Current val iou of sem is 0.413922195781263
+2026/04/03 22:00:24 - mmengine - INFO - Current val iou of geo is 0.5469060503464352
+2026/04/03 22:00:42 - mmengine - INFO - [TRAIN] Epoch 6 Iter     0/344   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.576 (0.576),   Sem_Scal_Loss: 1.533 (1.533),   Geo_Scal_Loss: 0.992 (0.992),   Loss: 3.769 (3.769),   GradNorm: 8.612,   lr: 0.0000343,   time: 7.398 (5.065)
+2026/04/03 22:02:39 - mmengine - INFO - [TRAIN] Epoch 6 Iter    50/344   FocalLoss: 0.003 (0.006),   LovaszLoss: 0.444 (0.483),   Sem_Scal_Loss: 0.901 (1.190),   Geo_Scal_Loss: 0.641 (0.692),   Loss: 2.259 (2.931),   GradNorm: 4.668,   lr: 0.0000340,   time: 2.372 (0.558)
+2026/04/03 22:04:36 - mmengine - INFO - [TRAIN] Epoch 6 Iter   100/344   FocalLoss: 0.011 (0.006),   LovaszLoss: 0.617 (0.489),   Sem_Scal_Loss: 1.817 (1.193),   Geo_Scal_Loss: 1.010 (0.711),   Loss: 4.590 (2.969),   GradNorm: 6.604,   lr: 0.0000336,   time: 2.384 (0.448)
+2026/04/03 22:06:33 - mmengine - INFO - [TRAIN] Epoch 6 Iter   150/344   FocalLoss: 0.007 (0.006),   LovaszLoss: 0.485 (0.481),   Sem_Scal_Loss: 1.193 (1.189),   Geo_Scal_Loss: 0.758 (0.699),   Loss: 3.117 (2.930),   GradNorm: 9.373,   lr: 0.0000333,   time: 2.374 (0.552)
+2026/04/03 22:08:30 - mmengine - INFO - [TRAIN] Epoch 6 Iter   200/344   FocalLoss: 0.004 (0.006),   LovaszLoss: 0.412 (0.495),   Sem_Scal_Loss: 0.765 (1.296),   Geo_Scal_Loss: 0.635 (0.734),   Loss: 2.195 (3.097),   GradNorm: 6.246,   lr: 0.0000330,   time: 2.298 (0.466)
+2026/04/03 22:10:26 - mmengine - INFO - [TRAIN] Epoch 6 Iter   250/344   FocalLoss: 0.004 (0.006),   LovaszLoss: 0.418 (0.480),   Sem_Scal_Loss: 0.807 (1.290),   Geo_Scal_Loss: 0.535 (0.692),   Loss: 2.114 (3.023),   GradNorm: 7.511,   lr: 0.0000326,   time: 2.444 (0.658)
+2026/04/03 22:12:23 - mmengine - INFO - [TRAIN] Epoch 6 Iter   300/344   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.481 (0.486),   Sem_Scal_Loss: 0.848 (1.373),   Geo_Scal_Loss: 0.578 (0.698),   Loss: 2.430 (3.105),   GradNorm: 6.238,   lr: 0.0000323,   time: 2.304 (0.466)
+2026/04/03 22:14:15 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.011 (0.011),   LovaszLoss: 0.549 (0.549),   Sem_Scal_Loss: 1.468 (1.468),   Geo_Scal_Loss: 0.732 (0.732),   Loss: 3.818 (3.818),   
+2026/04/03 22:14:42 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.005 (0.006),   LovaszLoss: 0.393 (0.463),   Sem_Scal_Loss: 0.672 (1.373),   Geo_Scal_Loss: 0.435 (0.725),   Loss: 1.973 (3.153),   
+2026/04/03 22:15:08 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.513 (0.459),   Sem_Scal_Loss: 1.296 (1.280),   Geo_Scal_Loss: 1.023 (0.688),   Loss: 3.445 (3.032),   
+2026/04/03 22:15:32 - mmengine - INFO - Current val iou of sem_cls is [ 0.968  0.355  0.604  0.421  0.370  0.452  0.604  0.611  0.491  0.388
+  0.589  0.432]
+2026/04/03 22:15:32 - mmengine - INFO - Current val iou of sem is 0.4834482631396478
+2026/04/03 22:15:32 - mmengine - INFO - Current val iou of geo is 0.5939632414816137
+2026/04/03 22:15:49 - mmengine - INFO - [TRAIN] Epoch 7 Iter     0/344   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.466 (0.466),   Sem_Scal_Loss: 1.158 (1.158),   Geo_Scal_Loss: 0.623 (0.623),   Loss: 2.811 (2.811),   GradNorm: 6.232,   lr: 0.0000320,   time: 7.621 (4.984)
+2026/04/03 22:17:46 - mmengine - INFO - [TRAIN] Epoch 7 Iter    50/344   FocalLoss: 0.008 (0.006),   LovaszLoss: 0.438 (0.460),   Sem_Scal_Loss: 0.858 (1.131),   Geo_Scal_Loss: 0.631 (0.670),   Loss: 2.708 (2.824),   GradNorm: 12.285,   lr: 0.0000316,   time: 2.218 (0.470)
+2026/04/03 22:19:43 - mmengine - INFO - [TRAIN] Epoch 7 Iter   100/344   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.449 (0.472),   Sem_Scal_Loss: 0.929 (1.226),   Geo_Scal_Loss: 0.552 (0.681),   Loss: 2.427 (2.920),   GradNorm: 11.103,   lr: 0.0000312,   time: 2.309 (0.468)
+2026/04/03 22:21:40 - mmengine - INFO - [TRAIN] Epoch 7 Iter   150/344   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.342 (0.453),   Sem_Scal_Loss: 0.614 (1.066),   Geo_Scal_Loss: 0.495 (0.676),   Loss: 1.726 (2.738),   GradNorm: 4.312,   lr: 0.0000309,   time: 2.309 (0.472)
+2026/04/03 22:23:37 - mmengine - INFO - [TRAIN] Epoch 7 Iter   200/344   FocalLoss: 0.007 (0.005),   LovaszLoss: 0.502 (0.450),   Sem_Scal_Loss: 1.287 (1.080),   Geo_Scal_Loss: 0.774 (0.639),   Loss: 3.305 (2.687),   GradNorm: 7.110,   lr: 0.0000305,   time: 2.326 (0.575)
+2026/04/03 22:25:34 - mmengine - INFO - [TRAIN] Epoch 7 Iter   250/344   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.475 (0.458),   Sem_Scal_Loss: 0.951 (1.181),   Geo_Scal_Loss: 0.745 (0.636),   Loss: 2.748 (2.781),   GradNorm: 5.811,   lr: 0.0000301,   time: 2.364 (0.532)
+2026/04/03 22:27:31 - mmengine - INFO - [TRAIN] Epoch 7 Iter   300/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.447 (0.444),   Sem_Scal_Loss: 1.112 (0.998),   Geo_Scal_Loss: 0.570 (0.642),   Loss: 2.575 (2.627),   GradNorm: 6.094,   lr: 0.0000297,   time: 2.246 (0.470)
+2026/04/03 22:29:22 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.011 (0.011),   LovaszLoss: 0.536 (0.536),   Sem_Scal_Loss: 1.391 (1.391),   Geo_Scal_Loss: 0.779 (0.779),   Loss: 3.808 (3.808),   
+2026/04/03 22:29:49 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.005 (0.006),   LovaszLoss: 0.376 (0.449),   Sem_Scal_Loss: 0.658 (1.296),   Geo_Scal_Loss: 0.428 (0.727),   Loss: 1.919 (3.048),   
+2026/04/03 22:30:15 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.498 (0.445),   Sem_Scal_Loss: 1.196 (1.219),   Geo_Scal_Loss: 0.955 (0.684),   Loss: 3.253 (2.921),   
+2026/04/03 22:30:39 - mmengine - INFO - Current val iou of sem_cls is [ 0.968  0.381  0.593  0.436  0.386  0.464  0.630  0.616  0.505  0.384
+  0.599  0.456]
+2026/04/03 22:30:39 - mmengine - INFO - Current val iou of sem is 0.49564009187329633
+2026/04/03 22:30:39 - mmengine - INFO - Current val iou of geo is 0.5999987185076004
+2026/04/03 22:30:56 - mmengine - INFO - [TRAIN] Epoch 8 Iter     0/344   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.495 (0.495),   Sem_Scal_Loss: 0.932 (0.932),   Geo_Scal_Loss: 0.758 (0.758),   Loss: 2.801 (2.801),   GradNorm: 6.170,   lr: 0.0000294,   time: 7.058 (3.452)
+2026/04/03 22:32:52 - mmengine - INFO - [TRAIN] Epoch 8 Iter    50/344   FocalLoss: 0.008 (0.005),   LovaszLoss: 0.523 (0.438),   Sem_Scal_Loss: 1.466 (1.067),   Geo_Scal_Loss: 0.623 (0.599),   Loss: 3.451 (2.622),   GradNorm: 13.603,   lr: 0.0000290,   time: 2.306 (0.469)
+2026/04/03 22:34:48 - mmengine - INFO - [TRAIN] Epoch 8 Iter   100/344   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.508 (0.438),   Sem_Scal_Loss: 1.350 (1.094),   Geo_Scal_Loss: 0.807 (0.627),   Loss: 3.274 (2.661),   GradNorm: 4.884,   lr: 0.0000286,   time: 2.316 (0.538)
+2026/04/03 22:36:45 - mmengine - INFO - [TRAIN] Epoch 8 Iter   150/344   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.435 (0.441),   Sem_Scal_Loss: 1.730 (1.019),   Geo_Scal_Loss: 0.455 (0.618),   Loss: 2.897 (2.567),   GradNorm: 23.815,   lr: 0.0000281,   time: 2.417 (0.593)
+2026/04/03 22:38:41 - mmengine - INFO - [TRAIN] Epoch 8 Iter   200/344   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.445 (0.429),   Sem_Scal_Loss: 0.932 (1.080),   Geo_Scal_Loss: 0.822 (0.575),   Loss: 2.843 (2.587),   GradNorm: 8.080,   lr: 0.0000277,   time: 2.333 (0.474)
+2026/04/03 22:40:39 - mmengine - INFO - [TRAIN] Epoch 8 Iter   250/344   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.344 (0.444),   Sem_Scal_Loss: 0.634 (1.107),   Geo_Scal_Loss: 0.478 (0.634),   Loss: 1.938 (2.701),   GradNorm: 7.582,   lr: 0.0000273,   time: 2.344 (0.472)
+2026/04/03 22:42:36 - mmengine - INFO - [TRAIN] Epoch 8 Iter   300/344   FocalLoss: 0.002 (0.005),   LovaszLoss: 0.345 (0.420),   Sem_Scal_Loss: 0.608 (0.920),   Geo_Scal_Loss: 0.459 (0.574),   Loss: 1.659 (2.411),   GradNorm: 7.056,   lr: 0.0000269,   time: 2.296 (0.454)
+2026/04/03 22:44:29 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.505 (0.505),   Sem_Scal_Loss: 1.275 (1.275),   Geo_Scal_Loss: 0.683 (0.683),   Loss: 3.252 (3.252),   
+2026/04/03 22:44:56 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.380 (0.434),   Sem_Scal_Loss: 0.689 (1.189),   Geo_Scal_Loss: 0.447 (0.703),   Loss: 1.932 (2.835),   
+2026/04/03 22:45:22 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.493 (0.432),   Sem_Scal_Loss: 1.220 (1.144),   Geo_Scal_Loss: 0.918 (0.667),   Loss: 3.203 (2.768),   
+2026/04/03 22:45:46 - mmengine - INFO - Current val iou of sem_cls is [ 0.969  0.356  0.617  0.450  0.383  0.477  0.648  0.643  0.525  0.338
+  0.576  0.471]
+2026/04/03 22:45:46 - mmengine - INFO - Current val iou of sem is 0.4984991629042131
+2026/04/03 22:45:46 - mmengine - INFO - Current val iou of geo is 0.6180188276110812
+2026/04/03 22:46:03 - mmengine - INFO - [TRAIN] Epoch 9 Iter     0/344   FocalLoss: 0.006 (0.006),   LovaszLoss: 0.523 (0.523),   Sem_Scal_Loss: 1.194 (1.194),   Geo_Scal_Loss: 0.746 (0.746),   Loss: 3.070 (3.070),   GradNorm: 5.816,   lr: 0.0000265,   time: 7.199 (3.804)
+2026/04/03 22:48:00 - mmengine - INFO - [TRAIN] Epoch 9 Iter    50/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.412 (0.424),   Sem_Scal_Loss: 0.782 (0.958),   Geo_Scal_Loss: 0.534 (0.598),   Loss: 2.171 (2.469),   GradNorm: 8.502,   lr: 0.0000261,   time: 2.323 (0.548)
+2026/04/03 22:49:57 - mmengine - INFO - [TRAIN] Epoch 9 Iter   100/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.366 (0.434),   Sem_Scal_Loss: 0.856 (1.018),   Geo_Scal_Loss: 0.498 (0.581),   Loss: 2.105 (2.535),   GradNorm: 6.977,   lr: 0.0000257,   time: 2.389 (0.473)
+2026/04/03 22:51:54 - mmengine - INFO - [TRAIN] Epoch 9 Iter   150/344   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.426 (0.418),   Sem_Scal_Loss: 1.034 (0.996),   Geo_Scal_Loss: 0.604 (0.568),   Loss: 2.341 (2.456),   GradNorm: 4.245,   lr: 0.0000252,   time: 2.299 (0.469)
+2026/04/03 22:53:50 - mmengine - INFO - [TRAIN] Epoch 9 Iter   200/344   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.388 (0.409),   Sem_Scal_Loss: 0.487 (0.862),   Geo_Scal_Loss: 0.358 (0.572),   Loss: 1.508 (2.314),   GradNorm: 14.049,   lr: 0.0000248,   time: 2.359 (0.473)
+2026/04/03 22:55:48 - mmengine - INFO - [TRAIN] Epoch 9 Iter   250/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.379 (0.424),   Sem_Scal_Loss: 0.706 (0.951),   Geo_Scal_Loss: 0.551 (0.567),   Loss: 2.076 (2.427),   GradNorm: 4.829,   lr: 0.0000244,   time: 2.378 (0.573)
+2026/04/03 22:57:46 - mmengine - INFO - [TRAIN] Epoch 9 Iter   300/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.403 (0.415),   Sem_Scal_Loss: 0.726 (0.932),   Geo_Scal_Loss: 0.605 (0.570),   Loss: 2.180 (2.398),   GradNorm: 5.397,   lr: 0.0000239,   time: 2.412 (0.604)
+2026/04/03 22:59:38 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.009 (0.009),   LovaszLoss: 0.517 (0.517),   Sem_Scal_Loss: 1.313 (1.313),   Geo_Scal_Loss: 0.660 (0.660),   Loss: 3.368 (3.368),   
+2026/04/03 23:00:05 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.346 (0.424),   Sem_Scal_Loss: 0.584 (1.152),   Geo_Scal_Loss: 0.395 (0.652),   Loss: 1.717 (2.773),   
+2026/04/03 23:00:30 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.473 (0.419),   Sem_Scal_Loss: 1.103 (1.077),   Geo_Scal_Loss: 0.855 (0.618),   Loss: 2.988 (2.660),   
+2026/04/03 23:00:55 - mmengine - INFO - Current val iou of sem_cls is [ 0.971  0.404  0.632  0.462  0.406  0.487  0.660  0.666  0.527  0.420
+  0.610  0.477]
+2026/04/03 23:00:55 - mmengine - INFO - Current val iou of sem is 0.5228638110772745
+2026/04/03 23:00:55 - mmengine - INFO - Current val iou of geo is 0.6292704540560768
+2026/04/03 23:01:11 - mmengine - INFO - [TRAIN] Epoch 10 Iter     0/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.314 (0.314),   Sem_Scal_Loss: 0.522 (0.522),   Geo_Scal_Loss: 0.374 (0.374),   Loss: 1.543 (1.543),   GradNorm: 4.818,   lr: 0.0000236,   time: 6.584 (3.543)
+2026/04/03 23:03:08 - mmengine - INFO - [TRAIN] Epoch 10 Iter    50/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.489 (0.404),   Sem_Scal_Loss: 1.354 (0.871),   Geo_Scal_Loss: 0.580 (0.556),   Loss: 2.834 (2.305),   GradNorm: 12.495,   lr: 0.0000231,   time: 2.309 (0.469)
+2026/04/03 23:05:04 - mmengine - INFO - [TRAIN] Epoch 10 Iter   100/344   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.419 (0.411),   Sem_Scal_Loss: 0.817 (0.945),   Geo_Scal_Loss: 0.686 (0.555),   Loss: 2.568 (2.369),   GradNorm: 8.156,   lr: 0.0000227,   time: 2.284 (0.471)
+2026/04/03 23:07:01 - mmengine - INFO - [TRAIN] Epoch 10 Iter   150/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.448 (0.408),   Sem_Scal_Loss: 1.232 (0.981),   Geo_Scal_Loss: 0.485 (0.541),   Loss: 2.607 (2.400),   GradNorm: 5.930,   lr: 0.0000222,   time: 2.339 (0.511)
+2026/04/03 23:08:59 - mmengine - INFO - [TRAIN] Epoch 10 Iter   200/344   FocalLoss: 0.006 (0.005),   LovaszLoss: 0.380 (0.401),   Sem_Scal_Loss: 0.700 (0.838),   Geo_Scal_Loss: 0.553 (0.540),   Loss: 2.224 (2.269),   GradNorm: 4.766,   lr: 0.0000218,   time: 2.346 (0.575)
+2026/04/03 23:10:55 - mmengine - INFO - [TRAIN] Epoch 10 Iter   250/344   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.408 (0.413),   Sem_Scal_Loss: 1.200 (0.919),   Geo_Scal_Loss: 0.557 (0.550),   Loss: 2.528 (2.332),   GradNorm: 5.405,   lr: 0.0000213,   time: 2.326 (0.471)
+2026/04/03 23:12:52 - mmengine - INFO - [TRAIN] Epoch 10 Iter   300/344   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.405 (0.406),   Sem_Scal_Loss: 0.842 (0.999),   Geo_Scal_Loss: 0.456 (0.533),   Loss: 2.029 (2.389),   GradNorm: 4.610,   lr: 0.0000209,   time: 2.382 (0.576)
+2026/04/03 23:14:45 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.507 (0.507),   Sem_Scal_Loss: 1.296 (1.296),   Geo_Scal_Loss: 0.617 (0.617),   Loss: 3.156 (3.156),   
+2026/04/03 23:15:12 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.341 (0.414),   Sem_Scal_Loss: 0.579 (1.135),   Geo_Scal_Loss: 0.349 (0.627),   Loss: 1.632 (2.688),   
+2026/04/03 23:15:37 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.465 (0.412),   Sem_Scal_Loss: 1.074 (1.069),   Geo_Scal_Loss: 0.841 (0.589),   Loss: 2.899 (2.583),   
+2026/04/03 23:16:02 - mmengine - INFO - Current val iou of sem_cls is [ 0.973  0.385  0.652  0.465  0.410  0.491  0.678  0.674  0.538  0.379
+  0.638  0.486]
+2026/04/03 23:16:02 - mmengine - INFO - Current val iou of sem is 0.5269559634463976
+2026/04/03 23:16:02 - mmengine - INFO - Current val iou of geo is 0.6342958280417201
+2026/04/03 23:16:20 - mmengine - INFO - [TRAIN] Epoch 11 Iter     0/344   FocalLoss: 0.002 (0.002),   LovaszLoss: 0.348 (0.348),   Sem_Scal_Loss: 0.639 (0.639),   Geo_Scal_Loss: 0.455 (0.455),   Loss: 1.668 (1.668),   GradNorm: 4.292,   lr: 0.0000205,   time: 7.562 (4.148)
+2026/04/03 23:18:17 - mmengine - INFO - [TRAIN] Epoch 11 Iter    50/344   FocalLoss: 0.005 (0.004),   LovaszLoss: 0.451 (0.394),   Sem_Scal_Loss: 2.084 (0.864),   Geo_Scal_Loss: 0.546 (0.499),   Loss: 3.539 (2.184),   GradNorm: 12.750,   lr: 0.0000201,   time: 2.355 (0.547)
+2026/04/03 23:20:14 - mmengine - INFO - [TRAIN] Epoch 11 Iter   100/344   FocalLoss: 0.007 (0.004),   LovaszLoss: 0.445 (0.380),   Sem_Scal_Loss: 0.930 (0.813),   Geo_Scal_Loss: 0.697 (0.500),   Loss: 2.727 (2.117),   GradNorm: 5.516,   lr: 0.0000196,   time: 2.332 (0.557)
+2026/04/03 23:22:11 - mmengine - INFO - [TRAIN] Epoch 11 Iter   150/344   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.414 (0.397),   Sem_Scal_Loss: 0.792 (0.888),   Geo_Scal_Loss: 0.604 (0.516),   Loss: 2.451 (2.245),   GradNorm: 4.052,   lr: 0.0000192,   time: 2.321 (0.550)
+2026/04/03 23:24:07 - mmengine - INFO - [TRAIN] Epoch 11 Iter   200/344   FocalLoss: 0.008 (0.004),   LovaszLoss: 0.353 (0.380),   Sem_Scal_Loss: 0.708 (0.767),   Geo_Scal_Loss: 0.565 (0.493),   Loss: 2.424 (2.076),   GradNorm: 6.088,   lr: 0.0000187,   time: 2.243 (0.462)
+2026/04/03 23:26:03 - mmengine - INFO - [TRAIN] Epoch 11 Iter   250/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.424 (0.397),   Sem_Scal_Loss: 0.914 (0.846),   Geo_Scal_Loss: 0.617 (0.514),   Loss: 2.364 (2.171),   GradNorm: 6.079,   lr: 0.0000183,   time: 2.328 (0.466)
+2026/04/03 23:28:00 - mmengine - INFO - [TRAIN] Epoch 11 Iter   300/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.308 (0.391),   Sem_Scal_Loss: 0.533 (0.878),   Geo_Scal_Loss: 0.455 (0.517),   Loss: 1.720 (2.215),   GradNorm: 5.690,   lr: 0.0000178,   time: 2.357 (0.537)
+2026/04/03 23:29:52 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.486 (0.486),   Sem_Scal_Loss: 1.163 (1.163),   Geo_Scal_Loss: 0.634 (0.634),   Loss: 3.131 (3.131),   
+2026/04/03 23:30:19 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.344 (0.414),   Sem_Scal_Loss: 0.558 (1.136),   Geo_Scal_Loss: 0.378 (0.627),   Loss: 1.686 (2.725),   
+2026/04/03 23:30:44 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.447 (0.410),   Sem_Scal_Loss: 1.014 (1.059),   Geo_Scal_Loss: 0.777 (0.592),   Loss: 2.721 (2.609),   
+2026/04/03 23:31:08 - mmengine - INFO - Current val iou of sem_cls is [ 0.972  0.407  0.647  0.461  0.426  0.502  0.667  0.673  0.546  0.418
+  0.634  0.493]
+2026/04/03 23:31:08 - mmengine - INFO - Current val iou of sem is 0.5339570076566552
+2026/04/03 23:31:08 - mmengine - INFO - Current val iou of geo is 0.6322247339476574
+2026/04/03 23:31:26 - mmengine - INFO - [TRAIN] Epoch 12 Iter     0/344   FocalLoss: 0.002 (0.002),   LovaszLoss: 0.288 (0.288),   Sem_Scal_Loss: 0.471 (0.471),   Geo_Scal_Loss: 0.361 (0.361),   Loss: 1.334 (1.334),   GradNorm: 5.988,   lr: 0.0000174,   time: 7.733 (4.473)
+2026/04/03 23:33:23 - mmengine - INFO - [TRAIN] Epoch 12 Iter    50/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.322 (0.383),   Sem_Scal_Loss: 0.559 (0.869),   Geo_Scal_Loss: 0.465 (0.501),   Loss: 1.630 (2.167),   GradNorm: 5.034,   lr: 0.0000170,   time: 2.327 (0.470)
+2026/04/03 23:35:19 - mmengine - INFO - [TRAIN] Epoch 12 Iter   100/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.286 (0.368),   Sem_Scal_Loss: 0.535 (0.776),   Geo_Scal_Loss: 0.355 (0.465),   Loss: 1.446 (1.997),   GradNorm: 4.897,   lr: 0.0000166,   time: 2.374 (0.497)
+2026/04/03 23:37:16 - mmengine - INFO - [TRAIN] Epoch 12 Iter   150/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.389 (0.383),   Sem_Scal_Loss: 0.810 (0.851),   Geo_Scal_Loss: 0.578 (0.496),   Loss: 2.142 (2.141),   GradNorm: 4.482,   lr: 0.0000161,   time: 2.326 (0.451)
+2026/04/03 23:39:12 - mmengine - INFO - [TRAIN] Epoch 12 Iter   200/344   FocalLoss: 0.005 (0.004),   LovaszLoss: 0.426 (0.397),   Sem_Scal_Loss: 0.878 (0.894),   Geo_Scal_Loss: 0.743 (0.521),   Loss: 2.522 (2.259),   GradNorm: 5.667,   lr: 0.0000157,   time: 2.303 (0.451)
+2026/04/03 23:41:09 - mmengine - INFO - [TRAIN] Epoch 12 Iter   250/344   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.469 (0.366),   Sem_Scal_Loss: 1.181 (0.730),   Geo_Scal_Loss: 0.577 (0.481),   Loss: 2.854 (1.971),   GradNorm: 7.217,   lr: 0.0000153,   time: 2.373 (0.571)
+2026/04/03 23:43:06 - mmengine - INFO - [TRAIN] Epoch 12 Iter   300/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.372 (0.373),   Sem_Scal_Loss: 0.802 (0.779),   Geo_Scal_Loss: 0.421 (0.487),   Loss: 2.000 (2.048),   GradNorm: 6.704,   lr: 0.0000148,   time: 2.354 (0.468)
+2026/04/03 23:44:59 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.483 (0.483),   Sem_Scal_Loss: 1.172 (1.172),   Geo_Scal_Loss: 0.597 (0.597),   Loss: 3.096 (3.096),   
+2026/04/03 23:45:26 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.336 (0.400),   Sem_Scal_Loss: 0.545 (1.050),   Geo_Scal_Loss: 0.334 (0.591),   Loss: 1.596 (2.575),   
+2026/04/03 23:45:51 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.437 (0.396),   Sem_Scal_Loss: 0.986 (0.971),   Geo_Scal_Loss: 0.730 (0.556),   Loss: 2.638 (2.458),   
+2026/04/03 23:46:15 - mmengine - INFO - Current val iou of sem_cls is [ 0.973  0.353  0.662  0.475  0.443  0.508  0.688  0.662  0.562  0.468
+  0.656  0.511]
+2026/04/03 23:46:15 - mmengine - INFO - Current val iou of sem is 0.5442669323608421
+2026/04/03 23:46:15 - mmengine - INFO - Current val iou of geo is 0.6468709874290297
+2026/04/03 23:46:32 - mmengine - INFO - [TRAIN] Epoch 13 Iter     0/344   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.435 (0.435),   Sem_Scal_Loss: 0.862 (0.862),   Geo_Scal_Loss: 0.550 (0.550),   Loss: 2.390 (2.390),   GradNorm: 4.835,   lr: 0.0000145,   time: 7.083 (3.877)
+2026/04/03 23:48:29 - mmengine - INFO - [TRAIN] Epoch 13 Iter    50/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.464 (0.382),   Sem_Scal_Loss: 2.142 (0.852),   Geo_Scal_Loss: 0.442 (0.493),   Loss: 3.412 (2.140),   GradNorm: 11.788,   lr: 0.0000141,   time: 2.293 (0.469)
+2026/04/03 23:50:24 - mmengine - INFO - [TRAIN] Epoch 13 Iter   100/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.468 (0.375),   Sem_Scal_Loss: 1.061 (0.730),   Geo_Scal_Loss: 0.588 (0.476),   Loss: 2.463 (1.964),   GradNorm: 5.135,   lr: 0.0000136,   time: 2.287 (0.467)
+2026/04/03 23:52:21 - mmengine - INFO - [TRAIN] Epoch 13 Iter   150/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.370 (0.372),   Sem_Scal_Loss: 0.632 (0.777),   Geo_Scal_Loss: 0.502 (0.478),   Loss: 1.917 (2.058),   GradNorm: 4.627,   lr: 0.0000132,   time: 2.325 (0.443)
+2026/04/03 23:54:17 - mmengine - INFO - [TRAIN] Epoch 13 Iter   200/344   FocalLoss: 0.002 (0.004),   LovaszLoss: 0.299 (0.366),   Sem_Scal_Loss: 0.484 (0.756),   Geo_Scal_Loss: 0.379 (0.462),   Loss: 1.374 (1.989),   GradNorm: 5.327,   lr: 0.0000128,   time: 2.482 (0.722)
+2026/04/03 23:56:14 - mmengine - INFO - [TRAIN] Epoch 13 Iter   250/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.286 (0.368),   Sem_Scal_Loss: 0.499 (0.760),   Geo_Scal_Loss: 0.466 (0.470),   Loss: 1.635 (2.014),   GradNorm: 6.094,   lr: 0.0000124,   time: 2.266 (0.466)
+2026/04/03 23:58:10 - mmengine - INFO - [TRAIN] Epoch 13 Iter   300/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.412 (0.364),   Sem_Scal_Loss: 0.816 (0.724),   Geo_Scal_Loss: 0.629 (0.454),   Loss: 2.259 (1.909),   GradNorm: 3.911,   lr: 0.0000120,   time: 2.252 (0.470)
+2026/04/04 00:00:04 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.463 (0.463),   Sem_Scal_Loss: 1.083 (1.083),   Geo_Scal_Loss: 0.548 (0.548),   Loss: 2.835 (2.835),   
+2026/04/04 00:00:31 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.332 (0.387),   Sem_Scal_Loss: 0.528 (1.047),   Geo_Scal_Loss: 0.331 (0.572),   Loss: 1.571 (2.491),   
+2026/04/04 00:00:56 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.424 (0.384),   Sem_Scal_Loss: 0.900 (0.956),   Geo_Scal_Loss: 0.724 (0.539),   Loss: 2.506 (2.368),   
+2026/04/04 00:01:20 - mmengine - INFO - Current val iou of sem_cls is [ 0.974  0.425  0.673  0.494  0.441  0.517  0.699  0.694  0.573  0.433
+  0.671  0.524]
+2026/04/04 00:01:20 - mmengine - INFO - Current val iou of sem is 0.5585165817157604
+2026/04/04 00:01:20 - mmengine - INFO - Current val iou of geo is 0.6612518543324957
+2026/04/04 00:01:37 - mmengine - INFO - [TRAIN] Epoch 14 Iter     0/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.326 (0.326),   Sem_Scal_Loss: 0.588 (0.588),   Geo_Scal_Loss: 0.424 (0.424),   Loss: 1.710 (1.710),   GradNorm: 3.790,   lr: 0.0000116,   time: 6.577 (3.843)
+2026/04/04 00:03:33 - mmengine - INFO - [TRAIN] Epoch 14 Iter    50/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.355 (0.373),   Sem_Scal_Loss: 0.631 (0.803),   Geo_Scal_Loss: 0.418 (0.480),   Loss: 1.806 (2.056),   GradNorm: 7.595,   lr: 0.0000113,   time: 2.335 (0.467)
+2026/04/04 00:05:30 - mmengine - INFO - [TRAIN] Epoch 14 Iter   100/344   FocalLoss: 0.005 (0.004),   LovaszLoss: 0.414 (0.364),   Sem_Scal_Loss: 1.636 (0.782),   Geo_Scal_Loss: 0.456 (0.454),   Loss: 3.054 (2.000),   GradNorm: 8.995,   lr: 0.0000109,   time: 2.353 (0.568)
+2026/04/04 00:07:27 - mmengine - INFO - [TRAIN] Epoch 14 Iter   150/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.318 (0.359),   Sem_Scal_Loss: 0.538 (0.679),   Geo_Scal_Loss: 0.391 (0.471),   Loss: 1.518 (1.900),   GradNorm: 4.086,   lr: 0.0000105,   time: 2.306 (0.469)
+2026/04/04 00:09:24 - mmengine - INFO - [TRAIN] Epoch 14 Iter   200/344   FocalLoss: 0.005 (0.004),   LovaszLoss: 0.459 (0.357),   Sem_Scal_Loss: 1.323 (0.755),   Geo_Scal_Loss: 0.578 (0.450),   Loss: 2.844 (1.972),   GradNorm: 6.259,   lr: 0.0000101,   time: 2.216 (0.471)
+2026/04/04 00:11:20 - mmengine - INFO - [TRAIN] Epoch 14 Iter   250/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.347 (0.363),   Sem_Scal_Loss: 0.453 (0.758),   Geo_Scal_Loss: 0.334 (0.437),   Loss: 1.404 (1.953),   GradNorm: 4.560,   lr: 0.0000097,   time: 2.430 (0.452)
+2026/04/04 00:13:17 - mmengine - INFO - [TRAIN] Epoch 14 Iter   300/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.310 (0.353),   Sem_Scal_Loss: 0.512 (0.704),   Geo_Scal_Loss: 0.407 (0.430),   Loss: 1.659 (1.867),   GradNorm: 4.117,   lr: 0.0000094,   time: 2.341 (0.500)
+2026/04/04 00:15:11 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.008 (0.008),   LovaszLoss: 0.459 (0.459),   Sem_Scal_Loss: 1.051 (1.051),   Geo_Scal_Loss: 0.554 (0.554),   Loss: 2.818 (2.818),   
+2026/04/04 00:15:38 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.334 (0.385),   Sem_Scal_Loss: 0.535 (1.055),   Geo_Scal_Loss: 0.314 (0.551),   Loss: 1.558 (2.480),   
+2026/04/04 00:16:06 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.423 (0.380),   Sem_Scal_Loss: 0.900 (0.947),   Geo_Scal_Loss: 0.697 (0.519),   Loss: 2.493 (2.337),   
+2026/04/04 00:16:31 - mmengine - INFO - Current val iou of sem_cls is [ 0.975  0.434  0.678  0.497  0.457  0.522  0.702  0.704  0.580  0.486
+  0.677  0.529]
+2026/04/04 00:16:31 - mmengine - INFO - Current val iou of sem is 0.569559112590624
+2026/04/04 00:16:31 - mmengine - INFO - Current val iou of geo is 0.6651277356351906
+2026/04/04 00:16:49 - mmengine - INFO - [TRAIN] Epoch 15 Iter     0/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.314 (0.314),   Sem_Scal_Loss: 0.560 (0.560),   Geo_Scal_Loss: 0.424 (0.424),   Loss: 1.643 (1.643),   GradNorm: 3.311,   lr: 0.0000090,   time: 7.312 (4.180)
+2026/04/04 00:18:46 - mmengine - INFO - [TRAIN] Epoch 15 Iter    50/344   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.393 (0.356),   Sem_Scal_Loss: 0.813 (0.729),   Geo_Scal_Loss: 0.487 (0.450),   Loss: 2.281 (1.920),   GradNorm: 6.832,   lr: 0.0000087,   time: 2.419 (0.485)
+2026/04/04 00:20:45 - mmengine - INFO - [TRAIN] Epoch 15 Iter   100/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.476 (0.366),   Sem_Scal_Loss: 1.203 (0.769),   Geo_Scal_Loss: 0.512 (0.459),   Loss: 2.506 (1.982),   GradNorm: 3.974,   lr: 0.0000083,   time: 2.345 (0.468)
+2026/04/04 00:22:43 - mmengine - INFO - [TRAIN] Epoch 15 Iter   150/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.383 (0.363),   Sem_Scal_Loss: 0.745 (0.779),   Geo_Scal_Loss: 0.521 (0.456),   Loss: 2.070 (1.960),   GradNorm: 4.068,   lr: 0.0000080,   time: 2.324 (0.550)
+2026/04/04 00:24:41 - mmengine - INFO - [TRAIN] Epoch 15 Iter   200/344   FocalLoss: 0.005 (0.004),   LovaszLoss: 0.402 (0.356),   Sem_Scal_Loss: 0.758 (0.670),   Geo_Scal_Loss: 0.483 (0.442),   Loss: 2.101 (1.839),   GradNorm: 5.676,   lr: 0.0000076,   time: 2.486 (0.479)
+2026/04/04 00:26:38 - mmengine - INFO - [TRAIN] Epoch 15 Iter   250/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.413 (0.359),   Sem_Scal_Loss: 0.821 (0.715),   Geo_Scal_Loss: 0.675 (0.450),   Loss: 2.279 (1.904),   GradNorm: 4.175,   lr: 0.0000073,   time: 2.272 (0.467)
+2026/04/04 00:28:35 - mmengine - INFO - [TRAIN] Epoch 15 Iter   300/344   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.444 (0.358),   Sem_Scal_Loss: 0.965 (0.696),   Geo_Scal_Loss: 0.683 (0.443),   Loss: 2.653 (1.863),   GradNorm: 7.839,   lr: 0.0000070,   time: 2.288 (0.471)
+2026/04/04 00:30:26 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.471 (0.471),   Sem_Scal_Loss: 1.101 (1.101),   Geo_Scal_Loss: 0.548 (0.548),   Loss: 2.868 (2.868),   
+2026/04/04 00:30:53 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.314 (0.380),   Sem_Scal_Loss: 0.490 (1.036),   Geo_Scal_Loss: 0.307 (0.546),   Loss: 1.462 (2.442),   
+2026/04/04 00:31:18 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.400 (0.375),   Sem_Scal_Loss: 0.832 (0.939),   Geo_Scal_Loss: 0.677 (0.515),   Loss: 2.355 (2.312),   
+2026/04/04 00:31:43 - mmengine - INFO - Current val iou of sem_cls is [ 0.975  0.451  0.684  0.503  0.462  0.530  0.711  0.707  0.586  0.468
+  0.680  0.540]
+2026/04/04 00:31:43 - mmengine - INFO - Current val iou of sem is 0.5746866548234739
+2026/04/04 00:31:43 - mmengine - INFO - Current val iou of geo is 0.6694130463188733
+2026/04/04 00:32:01 - mmengine - INFO - [TRAIN] Epoch 16 Iter     0/344   FocalLoss: 0.005 (0.005),   LovaszLoss: 0.390 (0.390),   Sem_Scal_Loss: 1.134 (1.134),   Geo_Scal_Loss: 0.470 (0.470),   Loss: 2.459 (2.459),   GradNorm: 7.945,   lr: 0.0000067,   time: 7.548 (3.198)
+2026/04/04 00:33:58 - mmengine - INFO - [TRAIN] Epoch 16 Iter    50/344   FocalLoss: 0.004 (0.003),   LovaszLoss: 0.407 (0.348),   Sem_Scal_Loss: 0.846 (0.698),   Geo_Scal_Loss: 0.481 (0.415),   Loss: 2.165 (1.806),   GradNorm: 5.088,   lr: 0.0000064,   time: 2.357 (0.544)
+2026/04/04 00:35:56 - mmengine - INFO - [TRAIN] Epoch 16 Iter   100/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.307 (0.342),   Sem_Scal_Loss: 0.536 (0.648),   Geo_Scal_Loss: 0.338 (0.414),   Loss: 1.515 (1.784),   GradNorm: 3.785,   lr: 0.0000061,   time: 2.340 (0.561)
+2026/04/04 00:37:53 - mmengine - INFO - [TRAIN] Epoch 16 Iter   150/344   FocalLoss: 0.002 (0.004),   LovaszLoss: 0.347 (0.348),   Sem_Scal_Loss: 0.663 (0.669),   Geo_Scal_Loss: 0.503 (0.426),   Loss: 1.745 (1.819),   GradNorm: 4.087,   lr: 0.0000058,   time: 2.279 (0.450)
+2026/04/04 00:39:50 - mmengine - INFO - [TRAIN] Epoch 16 Iter   200/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.283 (0.343),   Sem_Scal_Loss: 0.471 (0.649),   Geo_Scal_Loss: 0.347 (0.425),   Loss: 1.507 (1.786),   GradNorm: 6.091,   lr: 0.0000055,   time: 2.313 (0.470)
+2026/04/04 00:41:47 - mmengine - INFO - [TRAIN] Epoch 16 Iter   250/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.368 (0.349),   Sem_Scal_Loss: 0.782 (0.674),   Geo_Scal_Loss: 0.470 (0.433),   Loss: 2.004 (1.836),   GradNorm: 4.394,   lr: 0.0000052,   time: 2.267 (0.467)
+2026/04/04 00:43:44 - mmengine - INFO - [TRAIN] Epoch 16 Iter   300/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.300 (0.340),   Sem_Scal_Loss: 0.477 (0.638),   Geo_Scal_Loss: 0.370 (0.412),   Loss: 1.400 (1.749),   GradNorm: 4.417,   lr: 0.0000050,   time: 2.257 (0.478)
+2026/04/04 00:45:35 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.449 (0.449),   Sem_Scal_Loss: 1.020 (1.020),   Geo_Scal_Loss: 0.526 (0.526),   Loss: 2.697 (2.697),   
+2026/04/04 00:46:02 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.314 (0.378),   Sem_Scal_Loss: 0.493 (1.001),   Geo_Scal_Loss: 0.304 (0.540),   Loss: 1.464 (2.401),   
+2026/04/04 00:46:27 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.411 (0.373),   Sem_Scal_Loss: 0.871 (0.915),   Geo_Scal_Loss: 0.670 (0.509),   Loss: 2.392 (2.281),   
+2026/04/04 00:46:51 - mmengine - INFO - Current val iou of sem_cls is [ 0.975  0.453  0.683  0.503  0.466  0.531  0.714  0.706  0.588  0.492
+  0.685  0.542]
+2026/04/04 00:46:51 - mmengine - INFO - Current val iou of sem is 0.5784244504437103
+2026/04/04 00:46:51 - mmengine - INFO - Current val iou of geo is 0.6708858557226604
+2026/04/04 00:47:09 - mmengine - INFO - [TRAIN] Epoch 17 Iter     0/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.306 (0.306),   Sem_Scal_Loss: 0.513 (0.513),   Geo_Scal_Loss: 0.328 (0.328),   Loss: 1.435 (1.435),   GradNorm: 5.563,   lr: 0.0000047,   time: 7.338 (3.755)
+2026/04/04 00:49:05 - mmengine - INFO - [TRAIN] Epoch 17 Iter    50/344   FocalLoss: 0.005 (0.003),   LovaszLoss: 0.402 (0.340),   Sem_Scal_Loss: 0.565 (0.710),   Geo_Scal_Loss: 0.351 (0.393),   Loss: 1.827 (1.778),   GradNorm: 4.359,   lr: 0.0000045,   time: 2.289 (0.482)
+2026/04/04 00:51:01 - mmengine - INFO - [TRAIN] Epoch 17 Iter   100/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.316 (0.334),   Sem_Scal_Loss: 0.554 (0.624),   Geo_Scal_Loss: 0.377 (0.417),   Loss: 1.519 (1.721),   GradNorm: 6.307,   lr: 0.0000042,   time: 2.355 (0.555)
+2026/04/04 00:52:58 - mmengine - INFO - [TRAIN] Epoch 17 Iter   150/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.318 (0.332),   Sem_Scal_Loss: 0.521 (0.624),   Geo_Scal_Loss: 0.353 (0.410),   Loss: 1.445 (1.722),   GradNorm: 4.572,   lr: 0.0000040,   time: 2.318 (0.467)
+2026/04/04 00:54:56 - mmengine - INFO - [TRAIN] Epoch 17 Iter   200/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.358 (0.345),   Sem_Scal_Loss: 0.677 (0.678),   Geo_Scal_Loss: 0.420 (0.420),   Loss: 1.795 (1.833),   GradNorm: 4.396,   lr: 0.0000037,   time: 2.257 (0.478)
+2026/04/04 00:56:54 - mmengine - INFO - [TRAIN] Epoch 17 Iter   250/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.348 (0.336),   Sem_Scal_Loss: 0.620 (0.617),   Geo_Scal_Loss: 0.540 (0.409),   Loss: 1.782 (1.715),   GradNorm: 3.520,   lr: 0.0000035,   time: 2.367 (0.544)
+2026/04/04 00:58:51 - mmengine - INFO - [TRAIN] Epoch 17 Iter   300/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.456 (0.334),   Sem_Scal_Loss: 1.072 (0.622),   Geo_Scal_Loss: 0.491 (0.406),   Loss: 2.338 (1.710),   GradNorm: 4.523,   lr: 0.0000033,   time: 2.323 (0.471)
+2026/04/04 01:00:44 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.454 (0.454),   Sem_Scal_Loss: 1.032 (1.032),   Geo_Scal_Loss: 0.527 (0.527),   Loss: 2.740 (2.740),   
+2026/04/04 01:01:10 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.309 (0.371),   Sem_Scal_Loss: 0.486 (0.974),   Geo_Scal_Loss: 0.301 (0.520),   Loss: 1.445 (2.329),   
+2026/04/04 01:01:36 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.417 (0.368),   Sem_Scal_Loss: 0.899 (0.898),   Geo_Scal_Loss: 0.666 (0.495),   Loss: 2.430 (2.234),   
+2026/04/04 01:02:00 - mmengine - INFO - Current val iou of sem_cls is [ 0.976  0.457  0.694  0.508  0.473  0.535  0.718  0.713  0.595  0.505
+  0.687  0.547]
+2026/04/04 01:02:00 - mmengine - INFO - Current val iou of sem is 0.584617529633049
+2026/04/04 01:02:00 - mmengine - INFO - Current val iou of geo is 0.6769846251041862
+2026/04/04 01:02:17 - mmengine - INFO - [TRAIN] Epoch 18 Iter     0/344   FocalLoss: 0.002 (0.002),   LovaszLoss: 0.317 (0.317),   Sem_Scal_Loss: 0.554 (0.554),   Geo_Scal_Loss: 0.368 (0.368),   Loss: 1.448 (1.448),   GradNorm: 3.254,   lr: 0.0000031,   time: 7.066 (3.151)
+2026/04/04 01:04:14 - mmengine - INFO - [TRAIN] Epoch 18 Iter    50/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.302 (0.349),   Sem_Scal_Loss: 0.482 (0.699),   Geo_Scal_Loss: 0.367 (0.428),   Loss: 1.432 (1.836),   GradNorm: 4.100,   lr: 0.0000029,   time: 2.293 (0.469)
+2026/04/04 01:06:10 - mmengine - INFO - [TRAIN] Epoch 18 Iter   100/344   FocalLoss: 0.004 (0.003),   LovaszLoss: 0.300 (0.334),   Sem_Scal_Loss: 0.535 (0.614),   Geo_Scal_Loss: 0.344 (0.401),   Loss: 1.532 (1.696),   GradNorm: 4.383,   lr: 0.0000027,   time: 2.298 (0.465)
+2026/04/04 01:08:07 - mmengine - INFO - [TRAIN] Epoch 18 Iter   150/344   FocalLoss: 0.006 (0.003),   LovaszLoss: 0.411 (0.334),   Sem_Scal_Loss: 1.098 (0.627),   Geo_Scal_Loss: 0.546 (0.403),   Loss: 2.647 (1.713),   GradNorm: 15.984,   lr: 0.0000026,   time: 2.333 (0.550)
+2026/04/04 01:10:05 - mmengine - INFO - [TRAIN] Epoch 18 Iter   200/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.340 (0.336),   Sem_Scal_Loss: 0.598 (0.692),   Geo_Scal_Loss: 0.376 (0.419),   Loss: 1.643 (1.795),   GradNorm: 4.729,   lr: 0.0000024,   time: 2.276 (0.511)
+2026/04/04 01:12:02 - mmengine - INFO - [TRAIN] Epoch 18 Iter   250/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.349 (0.329),   Sem_Scal_Loss: 0.695 (0.645),   Geo_Scal_Loss: 0.478 (0.400),   Loss: 1.827 (1.712),   GradNorm: 4.390,   lr: 0.0000022,   time: 2.297 (0.473)
+2026/04/04 01:13:58 - mmengine - INFO - [TRAIN] Epoch 18 Iter   300/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.358 (0.341),   Sem_Scal_Loss: 0.633 (0.626),   Geo_Scal_Loss: 0.497 (0.405),   Loss: 1.887 (1.722),   GradNorm: 4.008,   lr: 0.0000021,   time: 2.296 (0.472)
+2026/04/04 01:15:50 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.453 (0.453),   Sem_Scal_Loss: 1.021 (1.021),   Geo_Scal_Loss: 0.525 (0.525),   Loss: 2.729 (2.729),   
+2026/04/04 01:16:17 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.303 (0.373),   Sem_Scal_Loss: 0.470 (0.964),   Geo_Scal_Loss: 0.286 (0.526),   Loss: 1.397 (2.342),   
+2026/04/04 01:16:44 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.409 (0.368),   Sem_Scal_Loss: 0.859 (0.887),   Geo_Scal_Loss: 0.648 (0.495),   Loss: 2.354 (2.232),   
+2026/04/04 01:17:08 - mmengine - INFO - Current val iou of sem_cls is [ 0.976  0.461  0.690  0.508  0.473  0.533  0.717  0.713  0.593  0.503
+  0.688  0.548]
+2026/04/04 01:17:08 - mmengine - INFO - Current val iou of sem is 0.5842833594207127
+2026/04/04 01:17:08 - mmengine - INFO - Current val iou of geo is 0.6756267851739636
+2026/04/04 01:17:25 - mmengine - INFO - [TRAIN] Epoch 19 Iter     0/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.293 (0.293),   Sem_Scal_Loss: 0.494 (0.494),   Geo_Scal_Loss: 0.378 (0.378),   Loss: 1.567 (1.567),   GradNorm: 3.719,   lr: 0.0000020,   time: 7.317 (4.030)
+2026/04/04 01:19:23 - mmengine - INFO - [TRAIN] Epoch 19 Iter    50/344   FocalLoss: 0.004 (0.003),   LovaszLoss: 0.266 (0.332),   Sem_Scal_Loss: 0.448 (0.588),   Geo_Scal_Loss: 0.249 (0.381),   Loss: 1.343 (1.630),   GradNorm: 3.749,   lr: 0.0000018,   time: 2.324 (0.560)
+2026/04/04 01:21:23 - mmengine - INFO - [TRAIN] Epoch 19 Iter   100/344   FocalLoss: 0.005 (0.004),   LovaszLoss: 0.463 (0.335),   Sem_Scal_Loss: 1.245 (0.631),   Geo_Scal_Loss: 0.700 (0.412),   Loss: 2.903 (1.736),   GradNorm: 5.716,   lr: 0.0000017,   time: 2.318 (0.491)
+2026/04/04 01:23:20 - mmengine - INFO - [TRAIN] Epoch 19 Iter   150/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.310 (0.334),   Sem_Scal_Loss: 0.510 (0.611),   Geo_Scal_Loss: 0.393 (0.424),   Loss: 1.584 (1.721),   GradNorm: 3.461,   lr: 0.0000016,   time: 2.280 (0.473)
+2026/04/04 01:25:17 - mmengine - INFO - [TRAIN] Epoch 19 Iter   200/344   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.411 (0.337),   Sem_Scal_Loss: 0.941 (0.654),   Geo_Scal_Loss: 0.335 (0.389),   Loss: 2.133 (1.731),   GradNorm: 4.454,   lr: 0.0000015,   time: 2.314 (0.509)
+2026/04/04 01:27:15 - mmengine - INFO - [TRAIN] Epoch 19 Iter   250/344   FocalLoss: 0.004 (0.003),   LovaszLoss: 0.372 (0.341),   Sem_Scal_Loss: 0.694 (0.668),   Geo_Scal_Loss: 0.482 (0.399),   Loss: 1.965 (1.756),   GradNorm: 9.013,   lr: 0.0000014,   time: 2.289 (0.464)
+2026/04/04 01:29:12 - mmengine - INFO - [TRAIN] Epoch 19 Iter   300/344   FocalLoss: 0.002 (0.003),   LovaszLoss: 0.342 (0.337),   Sem_Scal_Loss: 0.633 (0.625),   Geo_Scal_Loss: 0.376 (0.403),   Loss: 1.548 (1.704),   GradNorm: 9.812,   lr: 0.0000013,   time: 2.417 (0.568)
+2026/04/04 01:31:06 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.448 (0.448),   Sem_Scal_Loss: 1.012 (1.012),   Geo_Scal_Loss: 0.509 (0.509),   Loss: 2.663 (2.663),   
+2026/04/04 01:31:32 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.304 (0.370),   Sem_Scal_Loss: 0.476 (0.964),   Geo_Scal_Loss: 0.289 (0.522),   Loss: 1.413 (2.328),   
+2026/04/04 01:31:58 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.403 (0.366),   Sem_Scal_Loss: 0.842 (0.886),   Geo_Scal_Loss: 0.647 (0.494),   Loss: 2.327 (2.222),   
+2026/04/04 01:32:22 - mmengine - INFO - Current val iou of sem_cls is [ 0.976  0.464  0.694  0.509  0.476  0.537  0.719  0.715  0.596  0.502
+  0.690  0.550]
+2026/04/04 01:32:22 - mmengine - INFO - Current val iou of sem is 0.5865536494744087
+2026/04/04 01:32:22 - mmengine - INFO - Current val iou of geo is 0.6779543600737803
+2026/04/04 01:32:39 - mmengine - INFO - [TRAIN] Epoch 20 Iter     0/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.302 (0.302),   Sem_Scal_Loss: 0.481 (0.481),   Geo_Scal_Loss: 0.385 (0.385),   Loss: 1.497 (1.497),   GradNorm: 3.592,   lr: 0.0000012,   time: 6.815 (3.573)
+2026/04/04 01:34:36 - mmengine - INFO - [TRAIN] Epoch 20 Iter    50/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.320 (0.329),   Sem_Scal_Loss: 0.672 (0.608),   Geo_Scal_Loss: 0.306 (0.407),   Loss: 1.564 (1.675),   GradNorm: 3.749,   lr: 0.0000012,   time: 2.419 (0.553)
+2026/04/04 01:36:34 - mmengine - INFO - [TRAIN] Epoch 20 Iter   100/344   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.297 (0.338),   Sem_Scal_Loss: 0.498 (0.615),   Geo_Scal_Loss: 0.297 (0.408),   Loss: 1.395 (1.725),   GradNorm: 3.854,   lr: 0.0000011,   time: 2.296 (0.475)
+2026/04/04 01:38:31 - mmengine - INFO - [TRAIN] Epoch 20 Iter   150/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.279 (0.330),   Sem_Scal_Loss: 0.457 (0.645),   Geo_Scal_Loss: 0.405 (0.396),   Loss: 1.409 (1.695),   GradNorm: 3.279,   lr: 0.0000011,   time: 2.323 (0.472)
+2026/04/04 01:40:28 - mmengine - INFO - [TRAIN] Epoch 20 Iter   200/344   FocalLoss: 0.002 (0.003),   LovaszLoss: 0.243 (0.329),   Sem_Scal_Loss: 0.364 (0.596),   Geo_Scal_Loss: 0.249 (0.402),   Loss: 1.063 (1.670),   GradNorm: 3.692,   lr: 0.0000010,   time: 2.313 (0.520)
+2026/04/04 01:42:25 - mmengine - INFO - [TRAIN] Epoch 20 Iter   250/344   FocalLoss: 0.002 (0.003),   LovaszLoss: 0.283 (0.325),   Sem_Scal_Loss: 0.483 (0.588),   Geo_Scal_Loss: 0.233 (0.409),   Loss: 1.206 (1.668),   GradNorm: 3.300,   lr: 0.0000010,   time: 2.323 (0.548)
+2026/04/04 01:44:22 - mmengine - INFO - [TRAIN] Epoch 20 Iter   300/344   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.318 (0.339),   Sem_Scal_Loss: 0.640 (0.631),   Geo_Scal_Loss: 0.364 (0.418),   Loss: 1.620 (1.735),   GradNorm: 3.744,   lr: 0.0000010,   time: 2.449 (0.491)
+2026/04/04 01:46:15 - mmengine - INFO - [EVAL] Iter     0/149   FocalLoss: 0.007 (0.007),   LovaszLoss: 0.446 (0.446),   Sem_Scal_Loss: 1.003 (1.003),   Geo_Scal_Loss: 0.506 (0.506),   Loss: 2.632 (2.632),   
+2026/04/04 01:46:41 - mmengine - INFO - [EVAL] Iter    50/149   FocalLoss: 0.003 (0.005),   LovaszLoss: 0.305 (0.370),   Sem_Scal_Loss: 0.477 (0.957),   Geo_Scal_Loss: 0.293 (0.518),   Loss: 1.422 (2.313),   
+2026/04/04 01:47:08 - mmengine - INFO - [EVAL] Iter   100/149   FocalLoss: 0.004 (0.005),   LovaszLoss: 0.406 (0.366),   Sem_Scal_Loss: 0.846 (0.883),   Geo_Scal_Loss: 0.646 (0.492),   Loss: 2.335 (2.215),   
+2026/04/04 01:47:32 - mmengine - INFO - Current val iou of sem_cls is [ 0.976  0.463  0.696  0.510  0.476  0.537  0.719  0.714  0.598  0.501
+  0.690  0.551]
+2026/04/04 01:47:32 - mmengine - INFO - Current val iou of sem is 0.5867766525891075
+2026/04/04 01:47:32 - mmengine - INFO - Current val iou of geo is 0.6788595758562735

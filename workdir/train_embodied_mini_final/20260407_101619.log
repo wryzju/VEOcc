@@ -1,0 +1,1748 @@
+2026/04/07 10:16:20 - mmengine - INFO - Config:
+_dim_ = 96
+amp = False
+batch_size = 2
+cls_dims = 13
+data_path = 'data/occscannet'
+empty_idx = 12
+eval_freq = 1
+find_unused_parameters = True
+grad_frames = None
+grad_max_norm = 35
+grid_config = dict(
+    dbound=[
+        0.24,
+        6.0,
+        0.08,
+    ],
+    xbound=[
+        0,
+        4.8,
+        0.08,
+    ],
+    ybound=[
+        0,
+        4.8,
+        0.08,
+    ],
+    zbound=[
+        0,
+        2.88,
+        0.08,
+    ])
+ignore_label = 0
+image_size = [
+    480,
+    640,
+]
+load_from = 'workdir/train_mono_mini_final/epoch_20.pth'
+loss = dict(
+    loss_cfgs=[
+        dict(
+            alpha=0.25,
+            cls_freq=[
+                5080655412,
+                722756,
+                44793226,
+                41084591,
+                3416464,
+                21897101,
+                10609339,
+                13846320,
+                23470172,
+                263393,
+                30949122,
+                9871618,
+                3196722886,
+            ],
+            gamma=2.0,
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask', pred='ce_input', target='ce_label'),
+            type='FocalLoss',
+            weight=100.0),
+        dict(
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask',
+                lovasz_input='ce_input',
+                lovasz_label='ce_label'),
+            type='LovaszLoss',
+            weight=1.0),
+        dict(
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask', pred='ce_input', ssc_target='ce_label'),
+            sem_cls_range=[
+                1,
+                12,
+            ],
+            type='Sem_Scal_Loss',
+            weight=1.0),
+        dict(
+            empty_idx=12,
+            ignore_label=0,
+            input_dict=dict(
+                fov_mask='fov_mask', pred='ce_input', ssc_target='ce_label'),
+            type='Geo_Scal_Loss',
+            weight=1.0),
+    ],
+    type='MultiLoss')
+lss_downsample = [
+    1,
+    1,
+    1,
+]
+max_epochs = 2
+model = dict(
+    backbone=None,
+    build_depthanything=False,
+    depth_net=dict(
+        cam_channels=15,
+        downsample=8,
+        grid_config=dict(
+            dbound=[
+                0.24,
+                6.0,
+                0.08,
+            ],
+            xbound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            ybound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            zbound=[
+                0,
+                2.88,
+                0.08,
+            ]),
+        loss_depth_type='kld',
+        loss_depth_weight=0.0,
+        numC_Trans=96,
+        numC_input=384,
+        type='GeometryDepth_Net'),
+    enable_uvd_conf=True,
+    head=dict(
+        conv_cfg=dict(bias=False, type='Conv3d'),
+        empty_idx=12,
+        in_channels=[
+            96,
+        ],
+        norm_cfg=dict(num_groups=24, requires_grad=True, type='GN'),
+        num_level=1,
+        occ_size=[
+            60,
+            60,
+            36,
+        ],
+        out_channel=13,
+        type='OccHead',
+        with_cp=True),
+    lifter=dict(
+        data_config=dict(input_size=[
+            480,
+            640,
+        ]),
+        downsample=8,
+        grid_config=dict(
+            dbound=[
+                0.24,
+                6.0,
+                0.08,
+            ],
+            xbound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            ybound=[
+                0,
+                4.8,
+                0.08,
+            ],
+            zbound=[
+                0,
+                2.88,
+                0.08,
+            ]),
+        type='LSSViewTransformer'),
+    local_fuser=dict(
+        class_frequencies=[
+            5080655412,
+            722756,
+            44793226,
+            41084591,
+            3416464,
+            21897101,
+            10609339,
+            13846320,
+            23470172,
+            263393,
+            30949122,
+            9871618,
+            3196722886,
+        ],
+        ignore_label=0,
+        in_channels=96,
+        loss_weight=1.0,
+        num_classes=13,
+        type='LocalLogitFusion'),
+    loss_occ=dict(
+        loss_cfgs=[
+            dict(
+                alpha=0.25,
+                cls_freq=[
+                    5080655412,
+                    722756,
+                    44793226,
+                    41084591,
+                    3416464,
+                    21897101,
+                    10609339,
+                    13846320,
+                    23470172,
+                    263393,
+                    30949122,
+                    9871618,
+                    3196722886,
+                ],
+                gamma=2.0,
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask', pred='ce_input', target='ce_label'),
+                type='FocalLoss',
+                weight=100.0),
+            dict(
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask',
+                    lovasz_input='ce_input',
+                    lovasz_label='ce_label'),
+                type='LovaszLoss',
+                weight=1.0),
+            dict(
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask',
+                    pred='ce_input',
+                    ssc_target='ce_label'),
+                sem_cls_range=[
+                    1,
+                    12,
+                ],
+                type='Sem_Scal_Loss',
+                weight=1.0),
+            dict(
+                empty_idx=12,
+                ignore_label=0,
+                input_dict=dict(
+                    fov_mask='fov_mask',
+                    pred='ce_input',
+                    ssc_target='ce_label'),
+                type='Geo_Scal_Loss',
+                weight=1.0),
+        ],
+        type='MultiLoss'),
+    neck=dict(
+        in_channels=[
+            48,
+            80,
+            224,
+            2560,
+        ],
+        out_channels=[
+            96,
+            96,
+            96,
+            96,
+        ],
+        type='SECONDFPN',
+        upsample_strides=[
+            0.5,
+            1,
+            2,
+            4,
+        ]),
+    occ_encoder_backbone=dict(
+        drop_path_rate=0.3,
+        numC_input=96,
+        num_channels=[
+            96,
+            96,
+            96,
+        ],
+        num_layer=[
+            2,
+            2,
+            2,
+        ],
+        stride=[
+            1,
+            2,
+            2,
+        ],
+        type='CustomResNet3D'),
+    occ_encoder_neck=dict(
+        act_cfg=dict(inplace=True, type='ReLU'),
+        conv_cfg=dict(type='Conv3d'),
+        in_channels=[
+            96,
+            96,
+            96,
+        ],
+        norm_cfg=dict(num_groups=24, requires_grad=True, type='GN'),
+        num_outs=3,
+        out_channels=96,
+        start_level=0,
+        type='GeneralizedLSSFPN',
+        upsample_cfg=dict(align_corners=False, mode='trilinear')),
+    type='VoxelSegmentorOnline')
+ngpu = 4
+norm_cfg = dict(num_groups=24, requires_grad=True, type='GN')
+num_cams = 1
+num_frames = 1
+occ_size = [
+    60,
+    60,
+    36,
+]
+offset = 0
+optimizer_wrapper = dict(
+    optimizer=dict(lr=0.0002, type='AdamW', weight_decay=0.01),
+    paramwise_cfg=dict(custom_keys=dict(backbone=dict(lr_mult=0.1))))
+pc_range = [
+    -51.2,
+    -51.2,
+    -5.0,
+    51.2,
+    51.2,
+    3.0,
+]
+print_freq = 1
+resize_lim = [
+    1.0,
+    1.0,
+]
+scale_range = [
+    0.01,
+    0.08,
+]
+scene_size = (
+    4.8,
+    4.8,
+    2.88,
+)
+seed = 1
+track_running_stats = True
+train_dataset_config = dict(
+    data_tag='mini',
+    empty_idx=12,
+    num_frames=1,
+    phase='train',
+    type='Scannet_Online_SceneOcc_Dataset')
+train_loader_config = dict(batch_size=2, num_workers=4, shuffle=True)
+train_wrapper_config = dict(
+    final_dim=[
+        480,
+        640,
+    ],
+    phase='train',
+    resize_lim=[
+        1.0,
+        1.0,
+    ],
+    type='Scannet_Scene_Occ_DatasetWrapper')
+val_dataset_config = dict(
+    data_tag='mini',
+    empty_idx=12,
+    num_frames=1,
+    phase='test',
+    type='Scannet_Online_SceneOcc_Dataset')
+val_loader_config = dict(batch_size=2, num_workers=4, shuffle=False)
+val_wrapper_config = dict(
+    final_dim=[
+        480,
+        640,
+    ],
+    phase='test',
+    resize_lim=[
+        1.0,
+        1.0,
+    ],
+    type='Scannet_Scene_Occ_DatasetWrapper')
+voxel_size = 0.08
+work_dir = 'workdir/train_embodied_mini'
+
+2026/04/07 10:16:28 - mmengine - INFO - Number of params: 416482
+2026/04/07 10:16:28 - mmengine - INFO - Model:
+VoxelSegmentorOnline(
+  (backbone): GenEfficientNet(
+    (conv_stem): Conv2dSame(3, 64, kernel_size=(3, 3), stride=(2, 2), bias=False)
+    (bn1): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    (act1): SiLU(inplace=True)
+    (blocks): Sequential(
+      (0): Sequential(
+        (0): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=64, bias=False)
+          (bn1): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(64, 16, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(16, 64, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(64, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+        (1): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (bn1): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+        (2): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (bn1): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+        (3): DepthwiseSeparableConv(
+          (conv_dw): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=32, bias=False)
+          (bn1): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(32, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 32, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pw): Conv2d(32, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn2): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): Identity()
+        )
+      )
+      (1): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(32, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(192, 192, kernel_size=(3, 3), stride=(2, 2), groups=192, bias=False)
+          (bn2): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(192, 8, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(8, 192, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(192, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (2): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(48, 288, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(288, 288, kernel_size=(5, 5), stride=(2, 2), groups=288, bias=False)
+          (bn2): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(288, 12, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(12, 288, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(288, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(480, 480, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 80, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(80, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (3): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(80, 480, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(480, 480, kernel_size=(3, 3), stride=(2, 2), groups=480, bias=False)
+          (bn2): BatchNorm2d(480, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(480, 20, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(20, 480, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(480, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (7): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (8): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (9): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (4): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(160, 960, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(960, 960, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=960, bias=False)
+          (bn2): BatchNorm2d(960, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(960, 40, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(40, 960, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(960, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (7): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (8): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (9): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(1344, 1344, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 224, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (5): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(224, 1344, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2dSame(1344, 1344, kernel_size=(5, 5), stride=(2, 2), groups=1344, bias=False)
+          (bn2): BatchNorm2d(1344, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(1344, 56, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(56, 1344, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(1344, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (4): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (5): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (6): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (7): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (8): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (9): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (10): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (11): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (12): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (6): Sequential(
+        (0): InvertedResidual(
+          (conv_pw): Conv2d(384, 2304, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(2304, 2304, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2304, bias=False)
+          (bn2): BatchNorm2d(2304, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(2304, 96, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(96, 2304, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(2304, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): InvertedResidual(
+          (conv_pw): Conv2d(640, 3840, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(3840, 3840, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=3840, bias=False)
+          (bn2): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(3840, 160, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(160, 3840, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(3840, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): InvertedResidual(
+          (conv_pw): Conv2d(640, 3840, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(3840, 3840, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=3840, bias=False)
+          (bn2): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(3840, 160, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(160, 3840, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(3840, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (3): InvertedResidual(
+          (conv_pw): Conv2d(640, 3840, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act1): SiLU(inplace=True)
+          (conv_dw): Conv2d(3840, 3840, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=3840, bias=False)
+          (bn2): BatchNorm2d(3840, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+          (act2): SiLU(inplace=True)
+          (se): SqueezeExcite(
+            (conv_reduce): Conv2d(3840, 160, kernel_size=(1, 1), stride=(1, 1))
+            (act1): SiLU(inplace=True)
+            (conv_expand): Conv2d(160, 3840, kernel_size=(1, 1), stride=(1, 1))
+          )
+          (conv_pwl): Conv2d(3840, 640, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(640, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+    )
+    (conv_head): Conv2d(640, 2560, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn2): BatchNorm2d(2560, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    (act2): SiLU(inplace=True)
+    (global_pool): Identity()
+    (classifier): Identity()
+  )
+  (neck): SECONDFPN(
+    (deblocks): ModuleList(
+      (0): Sequential(
+        (0): Conv2d(48, 96, kernel_size=(2, 2), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (1): Sequential(
+        (0): ConvTranspose2d(80, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (2): Sequential(
+        (0): ConvTranspose2d(224, 96, kernel_size=(2, 2), stride=(2, 2), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (3): Sequential(
+        (0): ConvTranspose2d(2560, 96, kernel_size=(4, 4), stride=(4, 4), bias=False)
+        (1): BatchNorm2d(96, eps=0.001, momentum=0.01, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+    )
+  )
+  init_cfg=[{'type': 'Kaiming', 'layer': 'ConvTranspose2d'}, {'type': 'Constant', 'layer': 'NaiveSyncBatchNorm2d', 'val': 1.0}]
+  (depth_net): GeometryDepth_Net(
+    (stereo_volume_encoder): StereoVolumeEncoder(
+      (stem): Sequential(
+        (0): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (1): GroupNorm(2, 72, eps=1e-05, affine=True)
+      )
+      (Unet): Sequential(
+        (0): SimpleUnet(
+          (conv1): Sequential(
+            (0): Sequential(
+              (0): Conv2d(72, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 144, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv2): Sequential(
+            (0): Sequential(
+              (0): Conv2d(144, 144, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 144, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv3): Sequential(
+            (0): Sequential(
+              (0): Conv2d(144, 288, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 288, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv4): Sequential(
+            (0): Sequential(
+              (0): Conv2d(288, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (1): GroupNorm(2, 288, eps=1e-05, affine=True)
+            )
+            (1): ReLU(inplace=True)
+          )
+          (conv5): Sequential(
+            (0): ConvTranspose2d(288, 144, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+            (1): BatchNorm2d(144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (conv6): Sequential(
+            (0): ConvTranspose2d(144, 72, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1), bias=False)
+            (1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (redir1): Sequential(
+            (0): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GroupNorm(2, 72, eps=1e-05, affine=True)
+          )
+          (redir2): Sequential(
+            (0): Conv2d(144, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): GroupNorm(2, 144, eps=1e-05, affine=True)
+          )
+        )
+      )
+      (conv_out): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+    )
+    (depth_net): DepthNet(
+      (reduce_conv): Sequential(
+        (0): Conv2d(384, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): BatchNorm2d(384, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+      )
+      (context_conv): Conv2d(384, 96, kernel_size=(1, 1), stride=(1, 1))
+      (bn): BatchNorm1d(15, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (depth_mlp): Mlp(
+        (fc1): Linear(in_features=15, out_features=384, bias=True)
+        (act): ReLU()
+        (drop1): Dropout(p=0.0, inplace=False)
+        (fc2): Linear(in_features=384, out_features=384, bias=True)
+        (drop2): Dropout(p=0.0, inplace=False)
+      )
+      (depth_se): SELayer(
+        (conv_reduce): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (act1): ReLU()
+        (conv_expand): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (gate): Sigmoid()
+      )
+      (context_mlp): Mlp(
+        (fc1): Linear(in_features=15, out_features=384, bias=True)
+        (act): ReLU()
+        (drop1): Dropout(p=0.0, inplace=False)
+        (fc2): Linear(in_features=384, out_features=384, bias=True)
+        (drop2): Dropout(p=0.0, inplace=False)
+      )
+      (context_se): SELayer(
+        (conv_reduce): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (act1): ReLU()
+        (conv_expand): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (gate): Sigmoid()
+      )
+      (depth_conv): Sequential(
+        (0): BasicBlock(
+          (conv1): Conv2d(384, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (downsample): Conv2d(384, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        )
+        (1): BasicBlock(
+          (conv1): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (2): BasicBlock(
+          (conv1): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (3): ASPP(
+          (aspp1): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (aspp2): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(6, 6), dilation=(6, 6), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (aspp3): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(12, 12), dilation=(12, 12), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (aspp4): _ASPPModule(
+            (atrous_conv): Conv2d(72, 72, kernel_size=(3, 3), stride=(1, 1), padding=(18, 18), dilation=(18, 18), bias=False)
+            (bn): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (relu): ReLU()
+          )
+          (global_avg_pool): Sequential(
+            (0): AdaptiveAvgPool2d(output_size=(1, 1))
+            (1): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (2): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (3): ReLU()
+          )
+          (conv1): Conv2d(360, 72, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(72, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU()
+          (dropout): Dropout(p=0.5, inplace=False)
+        )
+        (4): DeformConv2dPack(in_channels=72,
+        out_channels=72,
+        kernel_size=(3, 3),
+        stride=(1, 1),
+        padding=(1, 1),
+        dilation=(1, 1),
+        groups=4,
+        deform_groups=1,
+        bias=False)
+        (5): Conv2d(72, 72, kernel_size=(1, 1), stride=(1, 1))
+      )
+    )
+    (depth_aggregation): DepthAggregation(
+      (stem): Conv3d(2, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+      (mono_stereo_attention): Attention(
+        (neighbor_atttention): NeighborhoodCrossAttention2D(
+          head_dim=72, num_heads=1, kernel_size=5, dilation=1, rel_pos_bias=True
+          (q): Linear(in_features=72, out_features=72, bias=True)
+          (kv): Linear(in_features=72, out_features=144, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=72, out_features=72, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (stereo_mono_attention): Attention(
+        (neighbor_atttention): NeighborhoodCrossAttention2D(
+          head_dim=72, num_heads=1, kernel_size=5, dilation=1, rel_pos_bias=True
+          (q): Linear(in_features=72, out_features=72, bias=True)
+          (kv): Linear(in_features=72, out_features=144, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=72, out_features=72, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+      (UNet_3D): SimpleUnet3D(
+        (conv1): Sequential(
+          (0): Sequential(
+            (0): Conv3d(32, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 64, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv2): Sequential(
+          (0): Sequential(
+            (0): Conv3d(64, 64, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 64, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv3): Sequential(
+          (0): Sequential(
+            (0): Conv3d(64, 128, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 128, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv4): Sequential(
+          (0): Sequential(
+            (0): Conv3d(128, 128, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (1): GroupNorm(2, 128, eps=1e-05, affine=True)
+          )
+          (1): ReLU(inplace=True)
+        )
+        (conv5): Sequential(
+          (0): ConvTranspose3d(128, 64, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), output_padding=(1, 1, 1), bias=False)
+          (1): BatchNorm3d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (conv6): Sequential(
+          (0): ConvTranspose3d(64, 32, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), output_padding=(1, 1, 1), bias=False)
+          (1): BatchNorm3d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (redir1): Sequential(
+          (0): Conv3d(32, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+          (1): GroupNorm(2, 32, eps=1e-05, affine=True)
+        )
+        (redir2): Sequential(
+          (0): Conv3d(64, 64, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+          (1): GroupNorm(2, 64, eps=1e-05, affine=True)
+        )
+      )
+      (channel_attention): ChannelAttention3D(
+        (conv1): Sequential(
+          (0): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+          (1): GELU(approximate=none)
+          (2): GroupNorm(1, 32, eps=1e-05, affine=True)
+        )
+        (avg_pool): AdaptiveAvgPool3d(output_size=1)
+        (conv2): Sequential(
+          (0): Conv3d(32, 4, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (1): GELU(approximate=none)
+          (2): Conv3d(4, 32, kernel_size=(1, 1, 1), stride=(1, 1, 1))
+          (3): GELU(approximate=none)
+        )
+        (sigmoid): Sigmoid()
+        (conv): Sequential(
+          (0): Conv3d(32, 32, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+          (1): GELU(approximate=none)
+          (2): GroupNorm(2, 32, eps=1e-05, affine=True)
+        )
+      )
+      (out_conv): Conv3d(32, 1, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1))
+    )
+  )
+  (lifter): LSSViewTransformer()
+  (occ_encoder_backbone): CustomResNet3D(
+    (layers): Sequential(
+      (0): Sequential(
+        (0): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (downsample): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): Identity()
+        )
+        (1): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.050)
+        )
+      )
+      (1): Sequential(
+        (0): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (downsample): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.100)
+        )
+        (1): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.150)
+        )
+      )
+      (2): Sequential(
+        (0): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (downsample): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(2, 2, 2), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.200)
+        )
+        (1): BasicBlock3D(
+          (conv1): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (activate): ReLU(inplace=True)
+          )
+          (conv2): ConvModule(
+            (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+            (bn): BatchNorm3d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (relu): ReLU(inplace=True)
+          (drop_path): DropPath(drop_prob=0.250)
+        )
+      )
+    )
+  )
+  (occ_encoder_neck): GeneralizedLSSFPN(
+    (lateral_convs): ModuleList(
+      (0): ConvModule(
+        (conv): Conv3d(192, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+      (1): ConvModule(
+        (conv): Conv3d(192, 96, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+    )
+    (fpn_convs): ModuleList(
+      (0): ConvModule(
+        (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+      (1): ConvModule(
+        (conv): Conv3d(96, 96, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        (gn): GroupNorm(24, 96, eps=1e-05, affine=True)
+        (activate): ReLU(inplace=True)
+      )
+    )
+  )
+  (head): OccHead(
+    (occ_convs): ModuleList(
+      (0): Sequential(
+        (0): Conv3d(96, 48, kernel_size=(3, 3, 3), stride=(1, 1, 1), padding=(1, 1, 1), bias=False)
+        (1): GroupNorm(24, 48, eps=1e-05, affine=True)
+        (2): ReLU(inplace=True)
+        (3): Conv3d(48, 13, kernel_size=(1, 1, 1), stride=(1, 1, 1), bias=False)
+      )
+    )
+  )
+  (loss_occ): MultiLoss(
+    (losses): ModuleList(
+      (0): FocalLoss()
+      (1): LovaszLoss()
+      (2): Sem_Scal_Loss()
+      (3): Geo_Scal_Loss()
+    )
+  )
+  (local_fuser): LocalLogitFusion(
+    (pos_proj): Sequential(
+      (0): Linear(in_features=48, out_features=96, bias=True)
+      (1): ReLU(inplace=True)
+      (2): Linear(in_features=96, out_features=96, bias=True)
+    )
+    (conf_mlp): Sequential(
+      (0): Linear(in_features=1152, out_features=256, bias=True)
+      (1): ReLU(inplace=True)
+      (2): Linear(in_features=256, out_features=256, bias=True)
+      (3): ReLU(inplace=True)
+      (4): Linear(in_features=256, out_features=2, bias=True)
+    )
+    (coord_proj): Sequential(
+      (0): Linear(in_features=24, out_features=96, bias=True)
+      (1): ReLU(inplace=True)
+      (2): Linear(in_features=96, out_features=96, bias=True)
+    )
+    (feat_proj): Sequential(
+      (0): Linear(in_features=96, out_features=96, bias=True)
+      (1): ReLU(inplace=True)
+      (2): Linear(in_features=96, out_features=96, bias=True)
+    )
+    (logit_proj): Sequential(
+      (0): Linear(in_features=13, out_features=96, bias=True)
+      (1): ReLU(inplace=True)
+      (2): Linear(in_features=96, out_features=96, bias=True)
+    )
+  )
+)
+2026/04/07 10:16:28 - mmengine - INFO - converted sync bn.
+2026/04/07 10:16:29 - mmengine - INFO - enabled DDP static graph.
+2026/04/07 10:17:23 - mmengine - INFO - [TRAIN] scenes: scene0058_00, scene0649_01
+2026/04/07 10:17:23 - mmengine - INFO - [TRAIN] Epoch 1 Iter     0/8   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.375 (0.375),   Sem_Scal_Loss: 0.739 (0.840),   Geo_Scal_Loss: 0.564 (0.505),   fusion_loss: 0.968 (0.934),   fusion_valid_points: 2471.000 (2906.300),   fusion_batches: 2.000 (1.900),   Loss: 3.213 (3.005),   GradNorm: 1.378,   lr: 0.0000125,   time: 38.525 (18.093)
+2026/04/07 10:17:36 - mmengine - INFO - [TRAIN] scenes: scene0157_01, scene0276_00
+2026/04/07 10:17:36 - mmengine - INFO - [TRAIN] Epoch 1 Iter     1/8   FocalLoss: 0.007 (0.004),   LovaszLoss: 0.449 (0.320),   Sem_Scal_Loss: 3.339 (0.753),   Geo_Scal_Loss: 0.346 (0.397),   fusion_loss: 0.380 (0.669),   fusion_valid_points: 2000.000 (4117.900),   fusion_batches: 1.000 (1.767),   Loss: 5.225 (2.545),   GradNorm: 0.741,   lr: 0.0000245,   time: 12.886 (0.462)
+2026/04/07 10:17:50 - mmengine - INFO - [TRAIN] scenes: scene0487_01, scene0474_02
+2026/04/07 10:17:50 - mmengine - INFO - [TRAIN] Epoch 1 Iter     2/8   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.324 (0.346),   Sem_Scal_Loss: 0.543 (0.666),   Geo_Scal_Loss: 0.382 (0.412),   fusion_loss: 1.017 (1.057),   fusion_valid_points: 3464.000 (3004.500),   fusion_batches: 2.000 (1.933),   Loss: 2.573 (2.811),   GradNorm: 0.542,   lr: 0.0000364,   time: 13.465 (0.314)
+2026/04/07 10:18:03 - mmengine - INFO - [TRAIN] scenes: scene0160_00, scene0640_02
+2026/04/07 10:18:03 - mmengine - INFO - [TRAIN] Epoch 1 Iter     3/8   FocalLoss: 0.003 (0.004),   LovaszLoss: 0.309 (0.333),   Sem_Scal_Loss: 0.635 (0.707),   Geo_Scal_Loss: 0.278 (0.375),   fusion_loss: 0.465 (0.601),   fusion_valid_points: 5677.000 (5722.567),   fusion_batches: 2.000 (1.867),   Loss: 2.018 (2.434),   GradNorm: 0.292,   lr: 0.0000484,   time: 13.153 (0.498)
+2026/04/07 10:18:16 - mmengine - INFO - [TRAIN] scenes: scene0120_01, scene0704_00
+2026/04/07 10:18:16 - mmengine - INFO - [TRAIN] Epoch 1 Iter     4/8   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.371 (0.327),   Sem_Scal_Loss: 0.906 (0.992),   Geo_Scal_Loss: 0.364 (0.376),   fusion_loss: 0.742 (0.913),   fusion_valid_points: 555.000 (2748.800),   fusion_batches: 1.000 (1.833),   Loss: 2.672 (2.915),   GradNorm: 0.994,   lr: 0.0000603,   time: 12.782 (0.452)
+2026/04/07 10:18:29 - mmengine - INFO - [TRAIN] scenes: scene0169_01, scene0003_02
+2026/04/07 10:18:29 - mmengine - INFO - [TRAIN] Epoch 1 Iter     5/8   FocalLoss: 0.003 (0.003),   LovaszLoss: 0.353 (0.307),   Sem_Scal_Loss: 0.616 (0.581),   Geo_Scal_Loss: 0.543 (0.356),   fusion_loss: 1.030 (0.791),   fusion_valid_points: 5892.000 (3640.533),   fusion_batches: 2.000 (1.867),   Loss: 2.874 (2.299),   GradNorm: 1.681,   lr: 0.0000722,   time: 13.408 (0.830)
+2026/04/07 10:18:42 - mmengine - INFO - [TRAIN] scenes: scene0468_00, scene0332_02
+2026/04/07 10:18:42 - mmengine - INFO - [TRAIN] Epoch 1 Iter     6/8   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.270 (0.297),   Sem_Scal_Loss: 0.494 (0.635),   Geo_Scal_Loss: 0.269 (0.307),   fusion_loss: 0.248 (0.622),   fusion_valid_points: 5795.000 (3647.567),   fusion_batches: 2.000 (1.900),   Loss: 1.637 (2.261),   GradNorm: 0.698,   lr: 0.0000842,   time: 13.052 (0.470)
+2026/04/07 10:18:55 - mmengine - INFO - [TRAIN] scenes: scene0304_00, scene0168_01
+2026/04/07 10:18:55 - mmengine - INFO - [TRAIN] Epoch 1 Iter     7/8   FocalLoss: 0.004 (0.003),   LovaszLoss: 0.363 (0.369),   Sem_Scal_Loss: 0.721 (0.764),   Geo_Scal_Loss: 0.436 (0.470),   fusion_loss: 0.897 (0.815),   fusion_valid_points: 6635.000 (4916.067),   fusion_batches: 2.000 (1.767),   Loss: 2.843 (2.716),   GradNorm: 0.429,   lr: 0.0000961,   time: 12.996 (0.535)
+2026/04/07 10:18:56 - mmengine - INFO - Current global iou of sem is [0.91755392 0.19121969 0.66362943 0.54512066 0.51988136 0.54919529
+ 0.68729848 0.7494089  0.58043182 0.56236933 0.69989058 0.58440937]
+2026/04/07 10:18:56 - mmengine - INFO - Current global iou of sem is 0.5757140844009204
+2026/04/07 10:18:56 - mmengine - INFO - Current global iou of geo is 0.6734866504120407
+2026/04/07 10:19:15 - mmengine - INFO - [EVAL] scenes: scene0089_00, scene0274_02
+2026/04/07 10:19:15 - mmengine - INFO - [EVAL] Iter     0/2   FocalLoss: 0.037 (0.007),   LovaszLoss: 0.449 (0.339),   Sem_Scal_Loss: 1.455 (0.917),   Geo_Scal_Loss: 1.841 (0.596),   fusion_loss: 1.168 (0.698),   fusion_valid_points: 2960.000 (2642.300),   fusion_batches: 2.000 (1.933),   Loss: 8.648 (3.244),   
+2026/04/07 10:19:22 - mmengine - INFO - [EVAL] scenes: scene0543_02, scene0510_02
+2026/04/07 10:19:22 - mmengine - INFO - [EVAL] Iter     1/2   FocalLoss: 0.003 (0.006),   LovaszLoss: 0.337 (0.346),   Sem_Scal_Loss: 0.458 (0.844),   Geo_Scal_Loss: 0.363 (0.533),   fusion_loss: 1.295 (0.773),   fusion_valid_points: 2669.000 (3350.917),   fusion_batches: 2.000 (1.883),   Loss: 2.706 (3.072),   
+2026/04/07 10:19:23 - mmengine - INFO - Current global iou of sem is [ 0.898  0.320  0.616  0.477  0.391  0.592  0.753  0.612  0.588  0.471
+  0.668  0.468]
+2026/04/07 10:19:23 - mmengine - INFO - Current global iou of sem is 0.5413029207814353
+2026/04/07 10:19:23 - mmengine - INFO - Current global iou of geo is 0.6410212565365179
+2026/04/07 10:19:23 - mmengine - INFO - Current single val iou of sem_cls is [ 0.973  0.354  0.681  0.481  0.468  0.587  0.762  0.603  0.617  0.493
+  0.708  0.490]
+2026/04/07 10:19:23 - mmengine - INFO - Current single val iou of sem is 0.5677328628770902
+2026/04/07 10:19:23 - mmengine - INFO - Current single val iou of geo is 0.6832616340647063
+2026/04/07 10:19:23 - mmengine - INFO - Current fov val iou of sem_cls is [ 0.894  0.377  0.686  0.485  0.470  0.590  0.770  0.608  0.622  0.497
+  0.716  0.496]
+2026/04/07 10:19:23 - mmengine - INFO - Current fov val iou of sem is 0.5743426398012138
+2026/04/07 10:19:23 - mmengine - INFO - Current fov val iou of geo is 0.6901472348953162
+2026/04/07 10:20:03 - mmengine - INFO - [TRAIN] scenes: scene0115_01, scene0649_01
+2026/04/07 10:20:03 - mmengine - INFO - [TRAIN] Epoch 2 Iter     0/8   FocalLoss: 0.002 (0.004),   LovaszLoss: 0.383 (0.395),   Sem_Scal_Loss: 0.763 (1.019),   Geo_Scal_Loss: 0.572 (0.521),   fusion_loss: 1.167 (0.950),   fusion_valid_points: 3155.000 (4033.533),   fusion_batches: 2.000 (1.900),   Loss: 3.116 (3.277),   GradNorm: 0.590,   lr: 0.0001081,   time: 30.596 (8.850)
+2026/04/07 10:20:15 - mmengine - INFO - [TRAIN] scenes: scene0474_02, scene0000_00
+2026/04/07 10:20:15 - mmengine - INFO - [TRAIN] Epoch 2 Iter     1/8   FocalLoss: 0.004 (0.003),   LovaszLoss: 0.362 (0.361),   Sem_Scal_Loss: 0.625 (0.845),   Geo_Scal_Loss: 0.463 (0.411),   fusion_loss: 0.533 (0.658),   fusion_valid_points: 1185.000 (4064.700),   fusion_batches: 1.000 (1.833),   Loss: 2.389 (2.622),   GradNorm: 0.858,   lr: 0.0001200,   time: 11.970 (0.265)
+2026/04/07 10:20:27 - mmengine - INFO - [TRAIN] scenes: scene0080_01, scene0525_00
+2026/04/07 10:20:27 - mmengine - INFO - [TRAIN] Epoch 2 Iter     2/8   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.376 (0.334),   Sem_Scal_Loss: 0.721 (0.678),   Geo_Scal_Loss: 0.393 (0.348),   fusion_loss: 0.228 (0.693),   fusion_valid_points: 711.000 (3900.067),   fusion_batches: 1.000 (1.833),   Loss: 2.161 (2.419),   GradNorm: 0.233,   lr: 0.0001319,   time: 12.009 (0.245)
+2026/04/07 10:20:39 - mmengine - INFO - [TRAIN] scenes: scene0220_00, scene0258_00
+2026/04/07 10:20:39 - mmengine - INFO - [TRAIN] Epoch 2 Iter     3/8   FocalLoss: 0.001 (0.003),   LovaszLoss: 0.420 (0.304),   Sem_Scal_Loss: 1.692 (0.593),   Geo_Scal_Loss: 0.490 (0.379),   fusion_loss: 0.590 (0.760),   fusion_valid_points: 1504.000 (4722.067),   fusion_batches: 1.000 (1.700),   Loss: 3.298 (2.306),   GradNorm: 1.226,   lr: 0.0001439,   time: 12.142 (0.259)
+2026/04/07 10:20:51 - mmengine - INFO - [TRAIN] scenes: scene0292_01, scene0170_02
+2026/04/07 10:20:51 - mmengine - INFO - [TRAIN] Epoch 2 Iter     4/8   FocalLoss: 0.004 (0.004),   LovaszLoss: 0.360 (0.299),   Sem_Scal_Loss: 0.773 (0.559),   Geo_Scal_Loss: 0.295 (0.385),   fusion_loss: 0.435 (0.553),   fusion_valid_points: 2915.000 (2950.267),   fusion_batches: 2.000 (1.900),   Loss: 2.308 (2.198),   GradNorm: 0.655,   lr: 0.0001558,   time: 11.823 (0.248)
+2026/04/07 10:21:03 - mmengine - INFO - [TRAIN] scenes: scene0334_01, scene0493_01
+2026/04/07 10:21:03 - mmengine - INFO - [TRAIN] Epoch 2 Iter     5/8   FocalLoss: 0.001 (0.002),   LovaszLoss: 0.220 (0.289),   Sem_Scal_Loss: 0.344 (0.520),   Geo_Scal_Loss: 0.232 (0.306),   fusion_loss: 0.367 (0.544),   fusion_valid_points: 7877.000 (6851.933),   fusion_batches: 2.000 (1.900),   Loss: 1.304 (1.874),   GradNorm: 0.110,   lr: 0.0001678,   time: 12.081 (0.257)
+2026/04/07 10:21:15 - mmengine - INFO - [TRAIN] scenes: scene0122_00, scene0058_00
+2026/04/07 10:21:15 - mmengine - INFO - [TRAIN] Epoch 2 Iter     6/8   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.389 (0.368),   Sem_Scal_Loss: 0.733 (0.739),   Geo_Scal_Loss: 0.567 (0.482),   fusion_loss: 0.712 (0.673),   fusion_valid_points: 3037.000 (3579.567),   fusion_batches: 2.000 (1.900),   Loss: 3.008 (2.633),   GradNorm: 0.671,   lr: 0.0001797,   time: 12.046 (0.246)
+2026/04/07 10:21:27 - mmengine - INFO - [TRAIN] scenes: scene0437_01, scene0276_00
+2026/04/07 10:21:27 - mmengine - INFO - [TRAIN] Epoch 2 Iter     7/8   FocalLoss: 0.006 (0.004),   LovaszLoss: 0.366 (0.330),   Sem_Scal_Loss: 2.119 (0.734),   Geo_Scal_Loss: 0.362 (0.398),   fusion_loss: 0.515 (0.488),   fusion_valid_points: 2800.000 (5214.267),   fusion_batches: 1.000 (1.767),   Loss: 3.987 (2.351),   GradNorm: 0.248,   lr: 0.0001916,   time: 12.059 (0.428)
+2026/04/07 10:21:28 - mmengine - INFO - Current global iou of sem is [ 0.917  0.196  0.664  0.552  0.523  0.549  0.688  0.750  0.584  0.558
+  0.700  0.585]
+2026/04/07 10:21:28 - mmengine - INFO - Current global iou of sem is 0.5772970849579345
+2026/04/07 10:21:28 - mmengine - INFO - Current global iou of geo is 0.6773261979073136
+2026/04/07 10:21:48 - mmengine - INFO - [EVAL] scenes: scene0089_00, scene0274_02
+2026/04/07 10:21:48 - mmengine - INFO - [EVAL] Iter     0/2   FocalLoss: 0.037 (0.007),   LovaszLoss: 0.449 (0.339),   Sem_Scal_Loss: 1.455 (0.917),   Geo_Scal_Loss: 1.841 (0.596),   fusion_loss: 1.078 (0.657),   fusion_valid_points: 2960.000 (2642.300),   fusion_batches: 2.000 (1.933),   Loss: 8.558 (3.203),   
+2026/04/07 10:21:55 - mmengine - INFO - [EVAL] scenes: scene0543_02, scene0510_02
+2026/04/07 10:21:55 - mmengine - INFO - [EVAL] Iter     1/2   FocalLoss: 0.003 (0.006),   LovaszLoss: 0.337 (0.346),   Sem_Scal_Loss: 0.458 (0.844),   Geo_Scal_Loss: 0.363 (0.533),   fusion_loss: 1.224 (0.729),   fusion_valid_points: 2669.000 (3350.917),   fusion_batches: 2.000 (1.883),   Loss: 2.635 (3.028),   
+2026/04/07 10:21:56 - mmengine - INFO - Current global iou of sem is [ 0.897  0.319  0.613  0.479  0.390  0.591  0.753  0.612  0.588  0.467
+  0.666  0.468]
+2026/04/07 10:21:56 - mmengine - INFO - Current global iou of sem is 0.5406355908968725
+2026/04/07 10:21:56 - mmengine - INFO - Current global iou of geo is 0.6419042870017522
+2026/04/07 10:21:56 - mmengine - INFO - Current single val iou of sem_cls is [ 0.973  0.354  0.681  0.481  0.468  0.587  0.762  0.603  0.617  0.493
+  0.708  0.490]
+2026/04/07 10:21:56 - mmengine - INFO - Current single val iou of sem is 0.5677330212637692
+2026/04/07 10:21:56 - mmengine - INFO - Current single val iou of geo is 0.6832634677131645
+2026/04/07 10:21:56 - mmengine - INFO - Current fov val iou of sem_cls is [ 0.894  0.377  0.686  0.485  0.470  0.590  0.770  0.608  0.622  0.497
+  0.716  0.496]
+2026/04/07 10:21:56 - mmengine - INFO - Current fov val iou of sem is 0.5743420562538518
+2026/04/07 10:21:56 - mmengine - INFO - Current fov val iou of geo is 0.6901486525328416
