@@ -5,13 +5,13 @@
 
 > [Ruoyu Wang](https://april.zju.edu.cn/team/ruoyu-wang/), [Yukai Ma](https://april.zju.edu.cn/team/yukai-ma/), [Yuhang Lin](https://april.zju.edu.cn/team/yuhang-lin/), [Yong Liu](https://april.zju.edu.cn/our-team/)<sup>*</sup>
 
-<sup>*</sup> Corresponding Author. 
+> <sup>*</sup> Corresponding Author. 
 
 <!-- EmbodiedOcc formulates **an embodied 3D occupancy prediction task** and proposes a Gaussian-based framework to accomplish it. -->
 
 ## Video Demonstration
 ![online_pred](./assets/scene0089_00.gif)
-More visualization results are provided in our [project page](todo).
+> More visualization results are provided in our [project page](todo).
 
 ## Overview
 
@@ -69,10 +69,10 @@ VEOcc
 
     Task | Dataset | Split | IoU | mIoU | Download |
     | :---: | :---: | :---: | :---: | :---: | :---: |
-    | Local Pred | OccScanNet | mini | 67.89 | 58.68 | [ckpt](todo)/[log](./workdir/train_mono_mini_final/20260403_204406.log)|
-    | Local Pred | OccScanNet | full  | 64.55 | 55.49 | [ckpt](todo)/[log](./workdir/train_mono_full_final/20260405_121411.log)|
-    | Embodied Pred | EmbodiedOcc-ScanNet | mini | 64.19 | 54.06 | [ckpt](todo)/[log](./workdir/train_embodied_mini_final/20260407_101619.log)|
-    | Embodied Pred | EmbodiedOcc-ScanNet | full  | 62.21 | 53.00 | [ckpt](todo)/[log](./workdir/train_embodied_full_final/20260407_095601.log)|
+    | Local Pred | OccScanNet | mini | 67.89 | 58.68 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/mono_mini.pth)/[log](./workdir/train_mono_mini_final/20260403_204406.log)|
+    | Local Pred | OccScanNet | full  | 64.55 | 55.49 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/mono.pth)/[log](./workdir/train_mono_full_final/20260405_121411.log)|
+    | Embodied Pred | EmbodiedOcc-ScanNet | mini | 64.19 | 54.06 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/embodied_mini.pth)/[log](./workdir/train_embodied_mini_final/20260407_101619.log)|
+    | Embodied Pred | EmbodiedOcc-ScanNet | full  | 62.21 | 53.00 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/embodied.pth)/[log](./workdir/train_embodied_full_final/20260407_095601.log)|
 
 ### Train
 
@@ -121,9 +121,9 @@ VEOcc
 
 Our work is inspired by these excellent open-sourced repos:
 [L2COcc](https://github.com/StudyingFuFu/L2COcc)
-[mmdetection3d](https://github.com/open-mmlab/mmdetection3d)
+[mmdetection3d](https://github.com/open-mmlab/mmdetection3d).
 
-Our code is based on [EmbodiedOcc](https://github.com/ykiwu/embodiedocc). Visualization scripts is modified from the [visualization repository](https://github.com/Made-Gpt/visualization_tools) of [SplatSSC](https://github.com/Made-Gpt/SplatSSC). 
+Our code is based on [EmbodiedOcc](https://github.com/ykiwu/embodiedocc). Visualization scripts are modified from the [visualization repository](https://github.com/Made-Gpt/visualization_tools) of [SplatSSC](https://github.com/Made-Gpt/SplatSSC). 
 
 ## Citation
 
