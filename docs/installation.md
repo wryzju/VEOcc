@@ -24,9 +24,9 @@ mim install mmdet3d==1.1.1
 
 ### 2. Install other packages
 ```bash
-# pip install spconv-cu114==2.3.6
 pip install timm
 pip install vtk==9.0.1
+sudo apt install imagemagick ffmpeg
 ```
 
 ### 3. Install custom CUDA ops

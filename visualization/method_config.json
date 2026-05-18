@@ -1,0 +1,27 @@
+{
+  "Label": {
+    "pcd_root": "/home/komorebi/workspace/VEOcc-Offical/workdir/eval_mono_mini/ply/",
+    "pcd_fold": "gt",
+    "output_folder": "vis_occ_da_mayavi/label"
+  },
+  "SplatSSC": {
+    "pcd_root": "path/to/splatssc/ply/",
+    "pcd_fold": "vis_occ_pred",
+    "output_folder": "vis_occ_da_mayavi/splatssc"
+  },
+  "EmbodiedOcc": {
+    "pcd_root": "path/to/embodiedocc/ply/",
+    "pcd_fold": "pred",
+    "output_folder": "vis_occ_da_mayavi/embodiedocc"
+  },
+  "Ours": {
+    "pcd_root": "/home/komorebi/workspace/VEOcc-Offical/workdir/eval_mono_mini/ply/",
+    "pcd_fold": "pred",
+    "output_folder": "vis_occ_da_mayavi/pred"
+  },
+  "Ours_Colmap": {
+    "pcd_root": "/home/komorebi/workspace/VEOcc-Offical/workdir/eval_mono_colmap/ply/",
+    "pcd_fold": "pred",
+    "output_folder": "vis_occ_da_mayavi/pred"
+  } 
+}  

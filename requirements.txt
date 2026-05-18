@@ -209,3 +209,4 @@ yapf==0.40.2
 zipp==3.19.2
 natten==0.14.6
 efficientnet_pytorch==0.7.1
+vtk==9.4.2

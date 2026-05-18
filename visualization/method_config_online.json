@@ -1,0 +1,22 @@
+{
+  "Label": {
+    "pcd_root": "/home/komorebi/workspace/VEOcc-Offical/workdir/eval_embodied_mini/ply/",
+    "pcd_fold": "gt",
+    "output_folder": "vis_occ_da_mayavi/label_online"
+  },
+  "EmbodiedOcc": {
+    "pcd_root": "path/to/embodiedocc/ply/",
+    "pcd_fold": "pred",
+    "output_folder": "vis_occ_da_mayavi/embodiedocc_online"
+  },
+  "Ours": {
+    "pcd_root": "/home/komorebi/workspace/VEOcc-Offical/workdir/eval_embodied_mini/ply/",
+    "pcd_fold": "pred",
+    "output_folder": "vis_occ_da_mayavi/veocc_online"
+  },
+  "Ours_Colmap": {
+    "pcd_root": "/home/komorebi/workspace/VEOcc-Offical/workdir/eval_embodied_colmap/ply/",
+    "pcd_fold": "pred",
+    "output_folder": "vis_occ_da_mayavi/veocc_colmap_online"
+  } 
+}  

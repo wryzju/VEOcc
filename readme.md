@@ -1,5 +1,5 @@
 # VEOcc: Voxel-Centric Online Semantic Occupancy Prediction For Embodied Scene Understanding
-### [Paper](todo)  | [Project Page](todo) 
+### [Paper](todo)  | [Project Page](https://wryzju.github.io/VEOcc/) 
 
 > VEOcc: Voxel-Centric Online Semantic Occupancy Prediction For Embodied Scene Understanding
 
@@ -10,7 +10,8 @@
 <!-- EmbodiedOcc formulates **an embodied 3D occupancy prediction task** and proposes a Gaussian-based framework to accomplish it. -->
 
 ## Video Demonstration
-todo
+![online_pred](./assets/scene0089_00.gif)
+More visualization results are provided in our [project page](todo).
 
 ## Overview
 
@@ -97,23 +98,24 @@ VEOcc
     torchrun --nproc_per_node=4 eval_embodied.py --py-config config/eval_embodied.py --work-dir workdir/eval_embodied --ckpt-path checkpoints/embodied.pth
     torchrun --nproc_per_node=4 eval_embodied.py --py-config config/eval_embodied_mini.py --work-dir workdir/eval_embodied_mini --ckpt-path checkpoints/embodied_mini.pth
     ```
-### Visualize
- TODO
-<!-- 1. Local occupancy prediction:
+### Visualization
+1. Evaluate with --save-ply param:
     ```
-    $ cd EmbodiedOcc
-    $ torchrun --nproc_per_node=1 vis_mono.py --work-dir workdir/train_mono 
-    $ torchrun --nproc_per_node=1 vis_mono.py --work-dir workdir/train_mono_mini
+    # local
+    torchrun --nproc_per_node=4 eval_mono.py --py-config config/eval_mono_mini.py --work-dir workdir/eval_mono_mini --ckpt-path checkpoints/mono_mini.pth --save-ply
+    # embodied
+    torchrun --nproc_per_node=4 eval_embodied.py --py-config config/eval_embodied_mini.py --work-dir workdir/eval_embodied_mini --ckpt-path checkpoints/embodied_mini.pth --save-ply
     ```
+2. Run scripts for visualization:
+    ```
+    # local
+    bash visualization/vis_occ.sh
+    # or
+    bash visualization/vis_occ_rot.sh
 
-2. Embodied occupancy prediction:
+    # embodied
+    bash visualization/vis_occ_online.sh
     ```
-    $ cd EmbodiedOcc
-    $ torchrun --nproc_per_node=1 vis_embodied.py --work-dir workdir/train_embodied
-    $ torchrun --nproc_per_node=1 vis_embodied.py --work-dir workdir/train_embodied_mini
-    ```
-
-Please use the same workdir path with training setting. -->
 
 ## Related Projects
 
@@ -121,7 +123,7 @@ Our work is inspired by these excellent open-sourced repos:
 [L2COcc](https://github.com/StudyingFuFu/L2COcc)
 [mmdetection3d](https://github.com/open-mmlab/mmdetection3d)
 
-Our code is based on [EmbodiedOcc](https://github.com/ykiwu/embodiedocc).
+Our code is based on [EmbodiedOcc](https://github.com/ykiwu/embodiedocc). Visualization scripts is modified from the [visualization repository](https://github.com/Made-Gpt/visualization_tools) of [SplatSSC](https://github.com/Made-Gpt/SplatSSC). 
 
 ## Citation
 
