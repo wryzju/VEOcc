@@ -37,7 +37,6 @@ scale_range = [0.01, 0.08]
 image_size = [480, 640]
 occ_size = [60, 60, 36]
 resize_lim = [1.0, 1.0]
-num_frames = 0
 offset = 0
 grad_frames = None
 
@@ -156,17 +155,21 @@ model = dict(
 )
 
 data_path = 'data/occscannet'  # path/to/your/data/occscannet
+scene_name = 'hotel_260516'
+# scene_name = 'household_1_260523'
+# scene_name = 'household_2_260523'
+num_frames = 0 # for all frames
 
 train_dataset_config = dict(
     type='Colmap_Online_SceneOcc_Dataset',
-    scene_name='csc105_2floor_260513',
+    scene_name=scene_name,
     num_frames=num_frames,
     phase='train',
 )
 
 val_dataset_config = dict(
     type='Colmap_Online_SceneOcc_Dataset',
-    scene_name='csc105_2floor_260513',
+    scene_name=scene_name,
     num_frames=num_frames,
     phase='test',
 )

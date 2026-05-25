@@ -273,7 +273,8 @@ else
         if command -v convert &> /dev/null && command -v identify &> /dev/null; then
             echo "🔗 Combining RGB + PCD images (left: RGB, right: PCD)"
             # Prefer iterating over the expected frame list to avoid missing frames
-            # Load sequences JSON to query RGB paths
+            # Ours_Colmap stores RGB frames under data/colmap_made/<scene>/posed_images/<frameid>.jpg
+            # Other modes still use the JSON lookup as a fallback for backward compatibility.
             SEQ_JSON="visualization/scene_image_sequences_all_30.json"
             if [ ! -f "$SEQ_JSON" ]; then
                 echo "⚠️  $SEQ_JSON not found, falling back to direct path lookup"
@@ -304,9 +305,21 @@ else
 
                 frame_idx="${frame_name#pcd_}"
 
-                # Try to load RGB from sequences JSON first
+                # Try to load RGB from the scene-specific direct path first for Ours_Colmap.
                 rgb_file=""
-                if [ -n "$SEQ_JSON" ]; then
+                if [ "$METHOD_NAME" = "Ours_Colmap" ]; then
+                    rgb_candidates=(
+                        "data/colmap_made/${PCD_SCENES[scene_idx]}/posed_images/${frame_idx}.jpg"
+                        "data/colmap_made/${PCD_SCENES[scene_idx]}/posed_images/${frame_idx}.png"
+                    )
+
+                    for c in "${rgb_candidates[@]}"; do
+                        if [ -f "$c" ]; then
+                            rgb_file="$c"
+                            break
+                        fi
+                    done
+                elif [ -n "$SEQ_JSON" ]; then
                     rgb_file=$(python3 visualization/query_rgb_path.py --scene "${PCD_SCENES[scene_idx]}" --frame_idx "$frame_idx" --json_path "$SEQ_JSON" 2>/dev/null)
                     if [ -n "$rgb_file" ]; then
                         echo "🔎 RGB path for ${frame_name}: $rgb_file"

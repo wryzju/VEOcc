@@ -35,4 +35,5 @@ logs
 dist/
 workdir/
 colmap_made/
+colmap_made
 Depth_Anything_V2

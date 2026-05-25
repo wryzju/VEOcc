@@ -143,10 +143,13 @@ model = dict(
 )
 
 data_path = 'data/occscannet'  # path/to/your/data/occscannet
+scene_name = 'hotel_260516'
+# scene_name = 'household_1_260523'
+# scene_name = 'household_2_260523'
 
 train_dataset_config = dict(
     type='Colmap_Scene_OpenOccupancy_Dataset_OffLine_Depth',
-    scene_name='csc105_2floor_260513',
+    scene_name=scene_name,
     num_frames=num_frames,
     offset=offset,
     phase='train',
@@ -154,7 +157,7 @@ train_dataset_config = dict(
 
 val_dataset_config = dict(
     type='Colmap_Scene_OpenOccupancy_Dataset_OffLine_Depth',
-    scene_name='csc105_2floor_260513',
+    scene_name=scene_name,
     num_frames=num_frames,
     offset=offset,
     phase='test',
