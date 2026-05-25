@@ -1,11 +1,11 @@
 # VEOcc: Voxel-Centric Online Semantic Occupancy Prediction For Embodied Scene Understanding
-### [Paper](todo)  | [Project Page](https://wryzju.github.io/VEOcc/) 
+### [Paper](todo)  | [Project Page](https://anonymous.4open.science/w/VEOcc-D0D9/) 
 
 > Anonymous Authors (For double-blind review)
 
 ## Video Demonstration
 ![online_pred](./assets/scene0089_00.gif)
-> More visualization results are provided in our [project page](todo).
+> More visualization results are provided in our [project page](https://anonymous.4open.science/w/VEOcc-D0D9/).
 
 ## Overview
 
@@ -28,7 +28,7 @@ Unzip and move them to **data/scene_occ**.
     ```
     torchrun --nproc_per_node=4  run_mono_depth.py --py-config config/run_mono_depth_config.py
     ```
-4. Download our self-collected indoor sequences from [HERE](https://github.com/wryzju/VEOcc/releases/download/v1.0.1/colmap_made.zip) for zero-shot generalization evaluation. Unzip and move them to **data**. (optional).
+4. Download our self-collected indoor sequences from [HERE](https://osf.io/gzpy5/files/jqywe?view_only=693574570a674850b6f6ff6381ac9c89) or github release for zero-shot generalization evaluation. Unzip and move them to **data**. (optional).
 
 **Folder structure**
 ```
@@ -64,14 +64,14 @@ VEOcc
         ...
     )
     ```
-2. Download checkpoints if you need:
+2. Download checkpoints from [HERE](https://osf.io/gzpy5/overview?view_only=693574570a674850b6f6ff6381ac9c89) or github release if you need:
 
     Task | Dataset | Split | IoU | mIoU | Download |
     | :---: | :---: | :---: | :---: | :---: | :---: |
-    | Local Pred | OccScanNet | mini | 67.89 | 58.68 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/mono_mini.pth)/[log](./workdir/train_mono_mini_final/20260403_204406.log)|
-    | Local Pred | OccScanNet | full  | 64.55 | 55.49 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/mono.pth)/[log](./workdir/train_mono_full_final/20260405_121411.log)|
-    | Embodied Pred | EmbodiedOcc-ScanNet | mini | 64.19 | 54.06 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/embodied_mini.pth)/[log](./workdir/train_embodied_mini_final/20260407_101619.log)|
-    | Embodied Pred | EmbodiedOcc-ScanNet | full  | 62.21 | 53.00 | [ckpt](https://github.com/wryzju/VEOcc/releases/download/v1.0.0/embodied.pth)/[log](./workdir/train_embodied_full_final/20260407_095601.log)|
+    | Local Pred | OccScanNet | mini | 67.89 | 58.68 | [ckpt](https://osf.io/wdf2e?view_only=693574570a674850b6f6ff6381ac9c89)/[log](./workdir/train_mono_mini_final/20260403_204406.log)|
+    | Local Pred | OccScanNet | full  | 64.55 | 55.49 | [ckpt](https://osf.io/4qf2w?view_only=693574570a674850b6f6ff6381ac9c89)/[log](./workdir/train_mono_full_final/20260405_121411.log)|
+    | Embodied Pred | EmbodiedOcc-ScanNet | mini | 64.19 | 54.06 | [ckpt](https://osf.io/gzpy5/files/quh8k?view_only=693574570a674850b6f6ff6381ac9c89)/[log](./workdir/train_embodied_mini_final/20260407_101619.log)|
+    | Embodied Pred | EmbodiedOcc-ScanNet | full  | 62.21 | 53.00 | [ckpt](https://osf.io/utgdb?view_only=693574570a674850b6f6ff6381ac9c89)/[log](./workdir/train_embodied_full_final/20260407_095601.log)|
 
 ### Train
 
