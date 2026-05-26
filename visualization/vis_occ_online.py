@@ -125,6 +125,36 @@ def draw_line_segment(start,
                 reset_zoom=False)
 
 
+def filter_isolated_points(points, colors, distance_threshold=1.0):
+    """Remove points whose nearest other point is farther than the threshold."""
+    if points.shape[0] <= 1:
+        return points, colors
+
+    point_cloud = o3d.geometry.PointCloud()
+    point_cloud.points = o3d.utility.Vector3dVector(points)
+    kdtree = o3d.geometry.KDTreeFlann(point_cloud)
+
+    keep_mask = np.ones(points.shape[0], dtype=bool)
+    for index, point in enumerate(points):
+        neighbor_count, _, squared_distances = kdtree.search_knn_vector_3d(
+            point, 2)
+        if neighbor_count < 2:
+            keep_mask[index] = False
+            continue
+
+        nearest_other_distance = float(np.sqrt(squared_distances[1]))
+        if nearest_other_distance > distance_threshold:
+            keep_mask[index] = False
+
+    kept_points = points[keep_mask]
+    kept_colors = colors[keep_mask]
+    removed_count = int(points.shape[0] - kept_points.shape[0])
+    print(
+        f"[INFO] Removed {removed_count} isolated points with nearest-neighbor distance > {distance_threshold:.2f}m"
+    )
+    return kept_points, kept_colors
+
+
 def compute_frustum_corners(cam2world, intrinsic, scene_size):
     """Compute frustum corners in world coordinates for camera fitting/drawing."""
     origin = cam2world[:3, 3]
@@ -305,6 +335,11 @@ def visualize_voxels_with_original_colors(pcd_path,
     colors = np.asarray(pcd.colors)
 
     print(f"[INFO] Loaded {points.shape[0]} points from {pcd_path}")
+
+    points, colors = filter_isolated_points(points,
+                                            colors,
+                                            distance_threshold=0.5)
+    print(f"[INFO] Points remaining after outlier removal: {points.shape[0]}")
 
     colors = (colors * 255).astype(np.uint8)
     voxel_coords = np.floor((points / voxel_size) + 1e-4).astype(int)

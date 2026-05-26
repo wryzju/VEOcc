@@ -28,7 +28,7 @@ Unzip and move them to **data/scene_occ**.
     ```
     torchrun --nproc_per_node=4  run_mono_depth.py --py-config config/run_mono_depth_config.py
     ```
-4. Download our self-collected indoor sequences from [HERE](https://osf.io/gzpy5/files/jqywe?view_only=693574570a674850b6f6ff6381ac9c89) or github release for zero-shot generalization evaluation. Unzip and move them to **data**. (optional).
+4. Download our self-collected indoor sequences from [HERE](https://osf.io/nxcuh?view_only=693574570a674850b6f6ff6381ac9c89) or github release for zero-shot generalization evaluation. Unzip and move them to **data**. (optional).
 
 **Folder structure**
 ```
