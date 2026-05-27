@@ -123,6 +123,9 @@ VEOcc
     bash visualization/vis_occ_online.sh
     ```
 
+## Run VEOcc with Custom Data
+To run VEOcc on your own dataset, please follow the instructions provided in [docs/real_world.md](docs/real_world.md).
+
 ## Related Projects
 
 Our work is inspired by these excellent open-sourced repos:
