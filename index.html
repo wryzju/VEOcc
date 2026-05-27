@@ -378,21 +378,21 @@
         <img src="static/images/figs-method-260527.svg" alt="First research result visualization" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <!-- TODO: Replace with description of this result -->
         <h2 class="subtitle has-text-centered">
-          The overall framework of our proposed VEOcc. Given a sequence of monocular images, a voxel-centric network first predicts frame-wise local occupancy, which is then incrementally assimilated into a global occupancy grid via the proposed Spatio-TemporalAware Online Update Strategy. Within this strategy, Cross-Temporal Logit Aggregation (TLA) enforces temporal consistency, ReliabilityAware Confidence Modulation (RCM) calibrates spatial uncertainties, and Confidence-Driven Incremental State Update (CSU) recursively integrates these refined observations to ensure a robust global semantic state.
+          <b>The overall framework of our proposed VEOcc.</b> Given a sequence of monocular images, a voxel-centric network first predicts frame-wise local occupancy, which is then incrementally assimilated into a global occupancy grid via the proposed Spatio-TemporalAware Online Update Strategy. Within this strategy, Cross-Temporal Logit Aggregation (TLA) enforces temporal consistency, ReliabilityAware Confidence Modulation (RCM) calibrates spatial uncertainties, and Confidence-Driven Incremental State Update (CSU) recursively integrates these refined observations to ensure a robust global semantic state.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/figs-TLF-260527.png" alt="Second research result visualization" loading="lazy" style="width: 70%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-          Design of Cross-Temporal Logit Aggregation (TLA). This module adaptively aggregates semantic logits from adjacent frames by explicitly modeling cross-view discrepancies in both feature representations and spatial contexts.
+          <b>Design of Cross-Temporal Logit Aggregation (TLA).</b> This module adaptively aggregates semantic logits from adjacent frames by explicitly modeling cross-view discrepancies in both feature representations and spatial contexts.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
         <img src="static/images/figs-GFS-260527.svg" alt="Third research result visualization" loading="lazy" style="width: 70%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-         Visualization of the proposed Online Update Strategy. As the global occupancy incrementally built over time, unreliable predictions from early observations are progressively refined with incoming reliable observations, verifying the efficacy of our online update strategy.
+          <b>Visualization of the proposed Online Update Strategy.</b> As the global occupancy incrementally built over time, unreliable predictions from early observations are progressively refined with incoming reliable observations, verifying the efficacy of our online update strategy.
        </h2>
      </div>
      <!-- <div class="item">
@@ -438,13 +438,13 @@
         <div class="item item-video1">
         <img src="static/images/local_pred.png" alt="Second quantitative result visualization" loading="lazy" style="width: 85%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-          Design of Cross-Temporal Logit Aggregation (TLA). This module adaptively aggregates semantic logits from adjacent frames by explicitly modeling cross-view discrepancies in both feature representations and spatial contexts.
+          <b>Local Prediction Performance</b> on the Occ-ScanNet dataset. We mark the best score in <b>bold</b>.
         </h2>
         </div>
         <div class="item item-video2">
         <img src="static/images/global_pred.png" alt="Second quantitative result visualization" loading="lazy" style="width: 85%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-          Design of Cross-Temporal Logit Aggregation (TLA). This module adaptively aggregates semantic logits from adjacent frames by explicitly modeling cross-view discrepancies in both feature representations and spatial contexts.
+          <b>Embodied Prediction Performance</b> on the EmbodiedOcc-ScanNet dataset. We mark the best score in <b>bold</b>.
         </h2>
         </div>
       </div>
@@ -462,19 +462,19 @@
         <div class="item item-video1">
         <img src="static/images/figs-local_pred-260527.svg" alt="Second quantitative result visualization" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-          Qualitative results of local occupancy prediction on Occ-ScanNet. Our VEOcc achieves noticeably better prediction quality in object details, structural boundaries, occluded regions, and overall spatial smoothness compared with previous Gaussian-centric approaches.
+          <b>Qualitative results of local occupancy prediction on Occ-ScanNet.</b> Our VEOcc achieves noticeably better prediction quality in object details, structural boundaries, occluded regions, and overall spatial smoothness compared with previous Gaussian-centric approaches.
         </h2>
         </div>
         <div class="item item-video2">
         <img src="static/images/figs-global_pred-260527.png" alt="Second quantitative result visualization" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-          Qualitative results of embodied occupancy prediction on EmbodiedOcc-ScanNet. Our VEOcc successfully achieves highquality online occupancy prediction under diverse exploration trajectories.
+          <b>Qualitative results of embodied occupancy prediction on EmbodiedOcc-ScanNet.</b> Our VEOcc successfully achieves highquality online occupancy prediction under diverse exploration trajectories.
         </h2>
         </div>
         <div class="item item-video2">
         <img src="static/images/figs-zero-shot_pred-260527.svg" alt="Second quantitative result visualization" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
-          Zero-shot real-world generalization on self-collected indoor sequences. We show the COLMAP sparse reconstruction and our incrementally generated global semantic occupancy map for a single-room layout and double-room layouts. Without fine-tuning or scene priors, VEOcc accurately recovers geometry and semantics in unseen environments.
+          <b>Zero-shot real-world generalization on self-collected indoor sequences.</b> We show the COLMAP sparse reconstruction and our incrementally generated global semantic occupancy map for a single-room layout and double-room layouts. Without fine-tuning or scene priors, VEOcc accurately recovers geometry and semantics in unseen environments.
         </h2>
         </div>
       </div>
