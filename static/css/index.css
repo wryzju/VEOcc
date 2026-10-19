@@ -82,6 +82,20 @@ body {
     margin: 8px 4px;
 }
 
+.button-icon-svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+.ieee-xplore-logo {
+  display: block;
+  width: auto;
+  height: 1.35rem;
+  object-fit: contain;
+}
+
 .dnerf {
   font-variant: small-caps;
 }
