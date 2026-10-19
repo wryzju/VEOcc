@@ -1,11 +1,19 @@
 # VEOcc: Voxel-Centric Online Semantic Occupancy Prediction For Embodied Scene Understanding
-### [Paper](todo)  | [Project Page](https://anonymous.4open.science/w/VEOcc-D0D9/) 
+### [Paper](https://arxiv.org/abs/2605.25059) | [Project Page](https://wryzju.github.io/VEOcc/)
 
-> Anonymous Authors (For double-blind review)
+> Ruoyu Wang<sup>1,*</sup>, Yong Liu<sup>1,*,†</sup>, Jiahan Li<sup>1</sup>, Sheng Tao, Yuhang Lin<sup>1</sup>, Yukai Ma<sup>1</sup>
+>
+> <sup>1</sup>APRIL Lab, Institute of Cyber-Systems and Control, Zhejiang University
+>
+> Published in **IEEE Robotics and Automation Letters (RA-L), 2026**
+>
+> <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>†</sup>Corresponding author
 
 ## Video Demonstration
+<video src="./assets/route04-vis.mp4" controls muted playsinline width="100%"></video>
+
 ![online_pred](./assets/scene0089_00.gif)
-> More visualization results are provided in our [project page](https://anonymous.4open.science/w/VEOcc-D0D9/).
+> More visualization results are provided on our [project page](https://wryzju.github.io/VEOcc/).
 
 ## Overview
 
@@ -138,6 +146,16 @@ Our code is based on [EmbodiedOcc](https://github.com/ykiwu/embodiedocc). Visual
 ## Citation
 
 If you find this project helpful, please consider citing the following paper:
-```
-TODO
+```bibtex
+@ARTICLE{11731444,
+  author={Wang, Ruoyu and Liu, Yong and Li, Jiahan and Tao, Sheng and Lin, Yuhang and Ma, Yukai},
+  journal={IEEE Robotics and Automation Letters},
+  title={VEOcc: Voxel-Centric Online Semantic Occupancy Prediction for Embodied Scene Understanding},
+  year={2026},
+  volume={},
+  number={},
+  pages={1-8},
+  keywords={Modeling;Conferences;Cameras;Computers;Computer vision;Visualization;Silicon;Probability;Sequences;Sequential analysis;Semantic Scene Understanding;Mapping;Deep Learning for Visual Perception},
+  doi={10.1109/LRA.2026.3742277}
+}
 ```
