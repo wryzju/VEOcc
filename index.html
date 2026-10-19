@@ -359,13 +359,13 @@
 <!-- End demo videos -->
 
 
-<!-- Image carousel -->
+<!-- Methodology results -->
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
     <h2 class="title is-3">Methodology</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
+      <div class="results-stack">
+       <div class="result-item">
         <!-- TODO: Replace with your research result images -->
         <img src="static/images/figs-method-260922.svg" alt="Overview of the VEOcc framework" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <!-- TODO: Replace with description of this result -->
@@ -373,14 +373,14 @@
           <b>The overall framework of our proposed VEOcc.</b> Given a sequence of monocular images, a voxel-centric network first predicts frame-wise local occupancy, which is then incrementally assimilated into a global occupancy grid via the proposed Spatio-Temporal-Aware Online Update Strategy. Within this strategy, Cross-Temporal Logit Aggregation (TLA) enforces short-term temporal consistency, Reliability-Aware Confidence Modulation (RCM) calibrates spatial uncertainties, and Confidence-Driven Incremental State Update (CSU) recursively integrates these refined observations to ensure a robust global semantic state.
         </h2>
       </div>
-      <div class="item">
+      <div class="result-item">
         <!-- Your image here -->
         <img src="static/images/figs-TLF-260527.png" alt="Second research result visualization" loading="lazy" style="width: 70%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
           <b>Design of Cross-Temporal Logit Aggregation (TLA).</b> This module adaptively aggregates semantic logits from adjacent frames by explicitly modeling cross-view discrepancies in both feature representations and spatial contexts.
         </h2>
       </div>
-      <div class="item">
+      <div class="result-item">
         <!-- Your image here -->
         <img src="static/images/figs-GFS-260922.svg" alt="Visualization of the Spatio-Temporal-Aware Online Update Strategy" loading="lazy" style="width: 70%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
@@ -397,7 +397,7 @@
 </div>
 </div>
 </section>
-<!-- End image carousel -->
+<!-- End methodology results -->
 
 
 
@@ -426,14 +426,14 @@
   <div class="hero-body">
     <div class="container">
       <h2 class="title is-3">Quantitative Results</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
+      <div class="results-stack">
+        <div class="result-item">
         <img src="static/images/local_pred_260922.png" alt="Local prediction performance on the Occ-ScanNet dataset" loading="lazy" style="width: 85%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
           <b>Local Prediction Performance</b> on the Occ-ScanNet dataset. We mark the best score in <b>bold</b>.
         </h2>
         </div>
-        <div class="item item-video2">
+        <div class="result-item">
         <img src="static/images/global_pred_260922.png" alt="Embodied prediction performance on the EmbodiedOcc-ScanNet dataset" loading="lazy" style="width: 85%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
           <b>Embodied Prediction Performance</b> on the EmbodiedOcc-ScanNet dataset. We mark the best score in <b>bold</b>.
@@ -443,27 +443,27 @@
     </div>
   </div>
 </section>
-<!-- End video carousel -->
+<!-- End quantitative results -->
 
-<!-- Video carousel -->
+<!-- Qualitative results -->
 <section class="hero is-small">
   <div class="hero-body"  style="padding-bottom: 0;">
     <div class="container">
       <h2 class="title is-3">Qualitative Results</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
+      <div class="results-stack">
+        <div class="result-item">
         <img src="static/images/figs-local_pred-260527.svg" alt="Second quantitative result visualization" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
           <b>Qualitative results of local occupancy prediction on Occ-ScanNet.</b> Our VEOcc achieves noticeably better prediction quality in object details, structural boundaries, occluded regions, and overall spatial smoothness compared with previous Gaussian-centric approaches.
         </h2>
         </div>
-        <div class="item item-video2">
+        <div class="result-item">
         <img src="static/images/figs-global_pred-260922.svg" alt="Embodied occupancy predictions under diverse exploration trajectories" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
           <b>Qualitative results of embodied occupancy prediction on EmbodiedOcc-ScanNet.</b> Our VEOcc successfully achieves high-quality online occupancy prediction under diverse exploration trajectories.
         </h2>
         </div>
-        <div class="item item-video2">
+        <div class="result-item">
         <img src="static/images/figs-zero-shot_pred-260922.svg" alt="Zero-shot occupancy maps on self-collected indoor sequences" loading="lazy" style="width: 100%; height: auto; display: block; margin: 0 auto;"/>
         <h2 class="subtitle has-text-centered">
           <b>Zero-shot real-world generalization on self-collected indoor sequences.</b> We show the COLMAP sparse reconstruction and our incrementally generated global semantic occupancy map for a single-room layout (left) and double-room layouts (middle, right). Without fine-tuning or scene priors, VEOcc produces coherent global occupancy maps across unseen environments under rich viewpoint variations.
@@ -473,7 +473,7 @@
     </div>
   </div>
 </section>
-<!-- End video carousel -->
+<!-- End qualitative results -->
 
 
 <section class="section">

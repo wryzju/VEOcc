@@ -304,6 +304,28 @@ body {
   font-weight: 500;
 }
 
+/* Sequential qualitative results */
+.results-stack .result-item {
+  margin-bottom: 3.5rem;
+}
+
+.results-stack .result-item:last-child {
+  margin-bottom: 0;
+}
+
+.results-stack .result-item img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.results-stack .subtitle {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  font-size: 1rem !important;
+  font-weight: 500;
+}
+
 /* Pagination and Misc Improvements */
 .slider-pagination .slider-page {
   background: var(--primary-color);
